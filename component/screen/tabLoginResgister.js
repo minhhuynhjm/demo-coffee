@@ -13,13 +13,17 @@ import {
     ToastAndroid,
     AsyncStorage
 } from 'react-native';
-import Navigator from '../../routes/homeStack'
+import TabNavigation from '../../routes/tabNavigation'
+import Headers from '../common/header';
 
 export default function TabLoginResgister() {
     return (
-        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: "center"}}>
-            <View style={styles.mainForm}>
-                <Navigator></Navigator>
+        <View>
+        <Headers></Headers>
+            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: "center" }}>
+                <View style={styles.mainForm}>
+                    <TabNavigation></TabNavigation>
+                </View>
             </View>
         </View>
 
@@ -32,7 +36,7 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     mainForm: {
-        backgroundColor:'white',
+        backgroundColor: 'white',
         margin: 20,
         padding: 30,
         width: 300,
@@ -46,7 +50,7 @@ const styles = StyleSheet.create({
         shadowRadius: 5.46,
         borderRadius: 20,
         elevation: 9,
-        
+
     },
     input: {
         width: 200,

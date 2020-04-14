@@ -14,6 +14,8 @@ import {
     AsyncStorage
 } from 'react-native';
 
+import { globalStyles } from '../../styles/global'
+
 export default function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -32,43 +34,28 @@ export default function Register() {
     }
 
     return (
-        // <View style={{ flex: 1 }}>
-        //     <View>
-        //         <View style={{ height: 100, backgroundColor: '#d5a169', flexDirection: 'column' }} />
-        //         <View style ={{ flexDirection: 'column', justifyContent: 'center', alignItems: "center", margin:15}}>
-        //             <Text style={{ fontSize: 30 }}>
-        //                 INTAGE COOFFEE
-        //             </Text>
-        //         </View>
-        //     </View>
-        //     <View>
-        //         <Text>Login Screen</Text>
-        //         <Button title='Login' onPress={() => navigation.navigate('Menu')}></Button>
-        //     </View>
-        // </View>
-
         <View style={{ paddingTop:15,  backgroundColor: '#FFF' , flex:1 }}>
-            <Text style={styles.text}>Staff ID</Text>
+            <Text style={globalStyles.text}>Staff ID</Text>
             <TextInput
-                style={styles.input}
+                style={globalStyles.input}
                 onChangeText={value => setUsername(value)}
                 value={username}
                 placeholder={'Username'}
                 autoCapitalize='none'
             />
 
-            <Text style={styles.text}>Password</Text>
+            <Text style={globalStyles.text}>Password</Text>
             <TextInput
-                style={styles.input}
+                style={globalStyles.input}
                 onChangeText={value => setPassword(value)}
                 value={password}
                 secureTextEntry={true}
                 placeholder={'Password'}
                 autoCapitalize='none'
             />
-            <Text style={styles.text}>Confirm Password</Text>
+            <Text style={globalStyles.text}>Confirm Password</Text>
             <TextInput
-                style={styles.input}
+                style={globalStyles.input}
                 onChangeText={value => setPassword(value)}
                 value={password}
                 secureTextEntry={true}
