@@ -19,7 +19,6 @@ import Headers from '../common/header';
 export default function TabLoginResgister() {
     return (
         <View>
-        <Headers></Headers>
             <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: "center" }}>
                 <View style={styles.mainForm}>
                     <TabNavigation></TabNavigation>

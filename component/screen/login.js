@@ -33,7 +33,6 @@ export default function Login({ navigation }) {
     }
 
     return (
-        
         <View style={{ paddingTop: 15, backgroundColor: '#FFF', flex: 1 }}>
             <Text style={globalStyles.text}>Staff ID</Text>
             <TextInput

@@ -77,7 +77,6 @@ function FlatListItem({ item, index }) {
 export default function Menu({ navigation }) {
     return (
         <View>
-            <Headers></Headers>
             <View style={{ alignItems: 'center' }}>
                 <View style={{ backgroundColor: '#83bbb9', borderBottomLeftRadius: 5, borderBottomRightRadius: 5, paddingLeft: 5, paddingRight: 5, paddingBottom: 3 }}>
                     <Text style={{ color: 'white', fontWeight: "bold" }}>Menu</Text>
