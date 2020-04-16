@@ -15,10 +15,15 @@ import {
 } from 'react-native';
 import Headers from '../common/header';
 import menuData from '../../mock-data/menuData';
+import { actionTypes } from "../../redux/actions/actionTypes"
 
+import { useSelector, useDispatch } from "react-redux";
 
 
 function FlatListItem({ item, index }) {
+
+    //const counter = useSelector((state) => state.counter);
+    const dispatch = useDispatch();
 
     const [num, setNum] = useState(0);
     const [valItem, setValItem] = useState([]);
@@ -26,12 +31,13 @@ function FlatListItem({ item, index }) {
     const pressAddButton = () => {
         const parseNum = Number.parseInt(num) || 0;
         setNum(parseNum + 1);
-        console.log(valItem);
+        dispatch({ type: actionTypes.ADD_PRODUCT_TO_CART, payload: item });
     }
 
     const pressSubButton = () => {
         const parseNum = Number.parseInt(num) || 0;
         setNum(parseNum > 0 ? parseNum - 1 : 0);
+        dispatch({ type: actionTypes.REMOVE_PRODUCT_FROM_CART, payload: item });
     }
 
     return (
@@ -43,7 +49,7 @@ function FlatListItem({ item, index }) {
                 </View>
 
                 <View style={{ margin: 10 }}>
-                    <Text> {item.price}</Text>
+                    <Text> {item.price} $</Text>
                 </View>
 
                 <View style={{ margin: 10, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
@@ -59,12 +65,12 @@ function FlatListItem({ item, index }) {
                         height: 25,
                         textAlign: 'center'
                     }}
+                        editable={false}
                         keyboardType='numeric'
                         onChangeText={value => setNum(value >= 0 ? value : 0)}
                         value={`${num}`} ></TextInput>
 
                     <TouchableOpacity onPress={pressAddButton}>
-
                         <Text style={{ fontSize: 30, textAlign: 'center' }}> + </Text>
                     </TouchableOpacity>
                 </View>

@@ -5,7 +5,8 @@ import Menu from '../component/screen/menu';
 import TabLoginResgister from '../component/screen/tabLoginResgister';
 import Header from '../component/common/header';
 import Manager from '../component/screen/manager';
-import ShopCart from '../component/screen/shopCart';
+import ShopCartIcon from '../component/screen/shopCartIcon';
+import Order from '../component/screen/order';
 
 import {
     StyleSheet,
@@ -81,18 +82,18 @@ function LogoTitle({ navigation }) {
 export default function Navigator() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="TabLoginResgister" 
-            headerMode="float"
-            screenOptions={{
-                gestureEnabled: true, 
-                gestureDirection: "horizontal",
-                headerBackTitleVisible: false,
-                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-                headerStyle: {
-                    backgroundColor: '#D5A169',
-                },
-                headerTitleAlign: 'center',
-            }}>
+            <Stack.Navigator initialRouteName="TabLoginResgister"
+                headerMode="float"
+                screenOptions={{
+                    gestureEnabled: true,
+                    gestureDirection: "horizontal",
+                    headerBackTitleVisible: false,
+                    cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                    headerStyle: {
+                        backgroundColor: '#D5A169',
+                    },
+                    headerTitleAlign: 'center',
+                }}>
 
                 <Stack.Screen name="TabLoginResgister" component={TabLoginResgister}
                     options={({ navigation, route }) => ({
@@ -113,7 +114,7 @@ export default function Navigator() {
                             <LogoTitle navigation={navigation} />
                         ),
                         headerRight: () => (
-                            <ShopCart />
+                            <ShopCartIcon navigation={navigation}/>
                         ),
                     })}
                 />
@@ -129,7 +130,23 @@ export default function Navigator() {
                         ),
 
                         headerRight: () => (
-                            <ShopCart />
+                            <ShopCartIcon />
+                        ),
+                    })}
+                />
+
+                <Stack.Screen name="Order" component={Order}
+                    options={({ navigation, route }) => ({
+
+                        headerLeft: () => (
+                            <LogoLeft navigation={navigation}/>
+                        ),
+                        headerTitle: () => (
+                            <LogoTitle navigation={navigation} />
+                        ),
+
+                        headerRight: () => (
+                            <ShopCartIcon />
                         ),
                     })}
                 />
