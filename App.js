@@ -3,12 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import Navigator from './routes/homeStack'
 import Headers from './component/common/header'
 import Login from './component/screen/login';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { Provider } from "react-redux";
-import CartReducer from './redux/reducers/cartReducer'
+import allReducers from './redux/reducers/index'
 
-
-const store = createStore(CartReducer);
+const store = createStore(allReducers);
 
 export default function App() {
   return (

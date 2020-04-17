@@ -10,7 +10,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 export default function ShopCartIcon({ navigation }) {
-    const props = useSelector((state) => (state));
+    const props = useSelector((state) => (state.cartReducer));
     console.log(props);
     return (
         <View style={{ position: 'absolute', height: 50, width: 50, borderRadius: 15 }}>

@@ -16,17 +16,14 @@ import {
 import Headers from '../common/header';
 import menuData from '../../mock-data/menuData';
 import { actionTypes } from "../../redux/actions/actionTypes"
-
+import { addProductToCart, removeProductToCart } from '../../redux/actions'
 import { useSelector, useDispatch } from "react-redux";
 
-function FlatListItem({ item, index, refreshFlatList }) {
-    const props = useSelector((state) => (state));
-    let TotalPrice = props.totalPrice;
-    const [activeRowKey, setActiveRowKey] = useState(false);
+function FlatListItem({ item, index }) {
     const dispatch = useDispatch();
     const pressSubButton = () => {
-        refreshFlatList(setActiveRowKey(true));
-        dispatch({ type: actionTypes.REMOVE_PRODUCT_FROM_CART, payload: item });
+        //dispatch({ type: actionTypes.REMOVE_PRODUCT_FROM_CART, payload: item });
+        dispatch(removeProductToCart(item));
     }
 
     return (
@@ -40,15 +37,11 @@ function FlatListItem({ item, index, refreshFlatList }) {
                     <Text> {item.quantity} </Text>
                 </View>
                 <View style={{ margin: 10 }}>
-                    <Text> {item.price} $</Text>
+                    <Text> {item.quantity * item.price} $</Text>
                 </View>
                 <TouchableOpacity onPress={pressSubButton} >
                     <Text style={{ fontSize: 30, textAlign: 'center' }}> - </Text>
                 </TouchableOpacity>
-
-                <View style={{ margin: 10 }}>
-                    <Text>Total Price: {TotalPrice} </Text>
-                </View>
             </View>
             <View style={{ height: 1, backgroundColor: "white" }}></View>
         </View>
@@ -56,15 +49,10 @@ function FlatListItem({ item, index, refreshFlatList }) {
 }
 
 export default function Order({ navigation }) {
-    const props = useSelector((state) => (state));
+    const props = useSelector((state) => (state.cartReducer));
     const orderData = props.addedItems;
-    const [deletedRowKey, setDeletedRowKey] = useState(null);
-
-    const refreshFlatList = (deletedKey) => {
-        setDeletedRowKey(deletedKey);
-    };
-
-
+    let totalPrice = props.totalPrice;
+    let countTotalItem = props.countTotalItem;
     return (
         <View>
             <View style={{ alignItems: 'center' }}>
@@ -73,9 +61,27 @@ export default function Order({ navigation }) {
                 </View>
                 <FlatList
                     data={orderData}
-                    renderItem={({ item, index }) => <FlatListItem item={item} index={index} refreshFlatList={refreshFlatList}></FlatListItem>}
+                    renderItem={({ item, index }) => <FlatListItem item={item} index={index}></FlatListItem>}
                     keyExtractor={(item) => `key-${item.id}`}
-                ></FlatList>
+                    extraData={props}
+                >
+                </FlatList>
+                <View style={{ flex: 1, flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
+                    {countTotalItem > 0 ? (
+                        <View>
+                            <View style={{ margin: 10 }}>
+                                <Text> Count: {countTotalItem} </Text>
+                            </View>
+                            <View style={{ margin: 10 }}>
+                                <Text> Total Price: {totalPrice} $</Text>
+                            </View>
+                        </View>
+                    ) :
+                        <View>
+                            <Text>NoThing </Text>
+                        </View>
+                    }
+                </View>
             </View>
         </View>
     );

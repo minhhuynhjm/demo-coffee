@@ -16,28 +16,34 @@ import {
 import Headers from '../common/header';
 import menuData from '../../mock-data/menuData';
 import { actionTypes } from "../../redux/actions/actionTypes"
-
 import { useSelector, useDispatch } from "react-redux";
+import { addProductToCart, removeProductToCart } from '../../redux/actions'
 
+const findItemInCart = (cart, itemId) => {
+    return cart.find(x => x.id === itemId);
+}
 
 function FlatListItem({ item, index }) {
 
-    //const counter = useSelector((state) => state.counter);
-    const dispatch = useDispatch();
+    //const props = useSelector((state) => (state.cartReducer));
 
+    
+    const dispatch = useDispatch();
     const [num, setNum] = useState(0);
-    const [valItem, setValItem] = useState([]);
 
     const pressAddButton = () => {
         const parseNum = Number.parseInt(num) || 0;
         setNum(parseNum + 1);
-        dispatch({ type: actionTypes.ADD_PRODUCT_TO_CART, payload: item });
+        //dispatch({ type: actionTypes.ADD_PRODUCT_TO_CART, payload: item });
+        dispatch(addProductToCart(item));
     }
 
     const pressSubButton = () => {
         const parseNum = Number.parseInt(num) || 0;
         setNum(parseNum > 0 ? parseNum - 1 : 0);
-        dispatch({ type: actionTypes.REMOVE_PRODUCT_FROM_CART, payload: item });
+
+        //dispatch({ type: actionTypes.REMOVE_PRODUCT_FROM_CART, payload: item });
+        dispatch(removeProductToCart(item));
     }
 
     return (

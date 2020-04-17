@@ -19,9 +19,9 @@ export default function Manager({ navigation }) {
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text>Home Screen</Text>
             <Button
-                title="Go to Login"
+                title="Go to Menu"
                 onPress={() =>
-                    navigation.navigate('Login')
+                    navigation.navigate('Menu')
                 }
             />
         </View>
