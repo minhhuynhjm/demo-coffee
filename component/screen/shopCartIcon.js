@@ -11,11 +11,15 @@ import { useSelector, useDispatch } from "react-redux";
 
 export default function ShopCartIcon({ navigation }) {
     const props = useSelector((state) => (state.cartReducer));
-    console.log(props);
+
+    const clickOrder = () => {
+        navigation?.navigate('Order')
+    }
+
     return (
-        <View style={{ position: 'absolute', height: 50, width: 50, borderRadius: 15 }}>
+        <View>
             <Text style={{ color: 'red', fontWeight: 'bold' }}> {props.countTotalItem} </Text>
-            <TouchableOpacity onPress={() => navigation?.navigate('Order')}>
+            <TouchableOpacity onPress={clickOrder}>
                 <Image
                     style={{ width: 50, height: 30 }}
                     source={{ uri: 'https://www.searchpng.com/wp-content/uploads/2019/02/Cart-PNG-Icon-715x715.png' }}
@@ -25,5 +29,3 @@ export default function ShopCartIcon({ navigation }) {
     );
 }
 
-
-//{props.countTotalItem}

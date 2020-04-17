@@ -54,7 +54,7 @@ export default function Order({ navigation }) {
     let totalPrice = props.totalPrice;
     let countTotalItem = props.countTotalItem;
     return (
-        <View>
+        <View style={{ alignItems: 'center' }}>
             <View style={{ alignItems: 'center' }}>
                 <View style={{ backgroundColor: '#83bbb9', borderBottomLeftRadius: 5, borderBottomRightRadius: 5, paddingLeft: 5, paddingRight: 5, paddingBottom: 3 }}>
                     <Text style={{ color: 'white', fontWeight: "bold" }}>Order Confirm</Text>
@@ -68,7 +68,7 @@ export default function Order({ navigation }) {
                 </FlatList>
                 <View style={{ flex: 1, flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
                     {countTotalItem > 0 ? (
-                        <View>
+                        <View style={{ flex: 1, flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
                             <View style={{ margin: 10 }}>
                                 <Text> Count: {countTotalItem} </Text>
                             </View>

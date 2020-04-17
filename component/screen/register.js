@@ -29,12 +29,11 @@ export default function Register() {
     }
 
     const tabSignIn = () => {
-        console.log("Error");
         //navigation.navigate('Login');
     }
 
     return (
-        <View style={{ paddingTop:15,  backgroundColor: '#FFF' , flex:1 }}>
+        <View style={{ paddingTop: 15, backgroundColor: '#FFF', flex: 1 }}>
             <Text style={globalStyles.text}>Staff ID</Text>
             <TextInput
                 style={globalStyles.input}

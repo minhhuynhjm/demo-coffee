@@ -13,36 +13,20 @@ import {
     ToastAndroid,
     AsyncStorage
 } from 'react-native';
-import Headers from '../common/header';
 import menuData from '../../mock-data/menuData';
 import { actionTypes } from "../../redux/actions/actionTypes"
 import { useSelector, useDispatch } from "react-redux";
 import { addProductToCart, removeProductToCart } from '../../redux/actions'
 
-const findItemInCart = (cart, itemId) => {
-    return cart.find(x => x.id === itemId);
-}
-
 function FlatListItem({ item, index }) {
 
-    //const props = useSelector((state) => (state.cartReducer));
-
-    
     const dispatch = useDispatch();
-    const [num, setNum] = useState(0);
 
     const pressAddButton = () => {
-        const parseNum = Number.parseInt(num) || 0;
-        setNum(parseNum + 1);
-        //dispatch({ type: actionTypes.ADD_PRODUCT_TO_CART, payload: item });
         dispatch(addProductToCart(item));
     }
 
     const pressSubButton = () => {
-        const parseNum = Number.parseInt(num) || 0;
-        setNum(parseNum > 0 ? parseNum - 1 : 0);
-
-        //dispatch({ type: actionTypes.REMOVE_PRODUCT_FROM_CART, payload: item });
         dispatch(removeProductToCart(item));
     }
 
@@ -59,7 +43,7 @@ function FlatListItem({ item, index }) {
                 </View>
 
                 <View style={{ margin: 10, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
-                    <TouchableOpacity onPress={pressSubButton} disabled={num === 0} >
+                    <TouchableOpacity onPress={pressSubButton} disabled={item.quantity === 0} >
                         <Text style={{ fontSize: 30, textAlign: 'center' }}> - </Text>
                     </TouchableOpacity>
 
@@ -73,8 +57,8 @@ function FlatListItem({ item, index }) {
                     }}
                         editable={false}
                         keyboardType='numeric'
-                        onChangeText={value => setNum(value >= 0 ? value : 0)}
-                        value={`${num}`} ></TextInput>
+                        // onChangeText={value => setNum(value >= 0 ? value : 0)}
+                        value={`${item.quantity}`} ></TextInput>
 
                     <TouchableOpacity onPress={pressAddButton}>
                         <Text style={{ fontSize: 30, textAlign: 'center' }}> + </Text>
@@ -87,6 +71,10 @@ function FlatListItem({ item, index }) {
 }
 
 export default function Menu({ navigation }) {
+    const props = useSelector((state) => (state.cartReducer));
+    const listItem = props.addedItems;
+    const mergeData = merge(menuData, listItem);
+
     return (
         <View>
             <View style={{ alignItems: 'center' }}>
@@ -94,13 +82,22 @@ export default function Menu({ navigation }) {
                     <Text style={{ color: 'white', fontWeight: "bold" }}>Menu</Text>
                 </View>
                 <FlatList
-                    data={menuData}
+                    data={mergeData}
                     renderItem={({ item, index }) => <FlatListItem item={item} index={index} ></FlatListItem>}
                     keyExtractor={(item) => `key-${item.id}`}
+                    extraData={props}
                 ></FlatList>
             </View>
         </View>
     );
+}
+
+const merge = (array1 = [], array2 = []) => {
+    return array1.map(a1 => {
+        const index = array2.findIndex(a2 => a2.id === a1.id);
+        a1.quantity = index !== -1 ? array2[index].quantity : 0;
+        return a1;
+    })
 }
 
 const styles = StyleSheet.create({

@@ -114,7 +114,7 @@ export default function Navigator() {
                             <LogoTitle navigation={navigation} />
                         ),
                         headerRight: () => (
-                            <ShopCartIcon navigation={navigation}/>
+                            <ShopCartIcon navigation={navigation} />
                         ),
                     })}
                 />
@@ -123,15 +123,15 @@ export default function Navigator() {
                     options={({ navigation, route }) => ({
 
                         headerLeft: () => (
-                            <LogoLeft />
+                            <LogoLeft navigation={navigation} />
                         ),
                         headerTitle: () => (
                             <LogoTitle navigation={navigation} />
                         ),
 
-                        headerRight: () => (
-                            <ShopCartIcon />
-                        ),
+                        // headerRight: () => (
+                        //     <ShopCartIcon />
+                        // ),
                     })}
                 />
 
@@ -139,7 +139,7 @@ export default function Navigator() {
                     options={({ navigation, route }) => ({
 
                         headerLeft: () => (
-                            <LogoLeft navigation={navigation}/>
+                            <LogoLeft navigation={navigation} />
                         ),
                         headerTitle: () => (
                             <LogoTitle navigation={navigation} />

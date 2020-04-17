@@ -8,7 +8,6 @@ const initState = {
 }
 
 export default function CartReducer(state = initState, action) {
-    console.log(action);
     switch (action.type) {
         case actionTypes.ADD_PRODUCT_TO_CART:
             let tempItem = {}
