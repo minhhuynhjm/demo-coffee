@@ -16,6 +16,8 @@ import {
 } from 'react-native';
 
 import { getCategoryFromServer } from '../api/server'
+import deviceStorage from '../../localStorage/asyncStorage'
+import axios from 'axios'
 
 function FlatListItem({ item, index }) {
     return (
@@ -43,22 +45,35 @@ function FlatListItem({ item, index }) {
 
 
 export default function Manager({ navigation }) {
+    const baseURL = 'https://minhhuynhnews.azurewebsites.net/';
+    const apiGetCategory = baseURL + 'api/categories';
+
     const refreshDataFromServer = () => {
-        let data = getCategoryFromServer().then((item) => {
-            console.log('Valeu Item:', item);
+        // let data = getCategoryFromServer().then((item) => {
+        //     console.log('Valeu Item:', item);
 
-            setListData(item);
-            setRefresh(false);
+        //     setListData(item);
+        //     setRefresh(false);
 
-        }).catch((error) => {
+        // }).catch((error) => {
 
-            setListData([]);
-            setRefresh(false);
-        });
+        //     setListData([]);
+        //     setRefresh(false);
+        // });
+        axios
+            .get(apiGetCategory).then(res => {
+                setListData(res.data);
+                setRefresh(false);
+            }).catch(error => {
+                console.log(error);
+                setRefresh(false);
+            })
     }
 
     const clickGetData = () => {
-        console.log(listData);
+        deviceStorage.retrieveItem("persist:root").then(x => {
+            console.log(x.cartReducer);
+        })
     }
 
     const [listData, setListData] = useState([])
@@ -71,8 +86,9 @@ export default function Manager({ navigation }) {
     }, [refresh]);
 
     useEffect(() => {
-        console.log("init")
+        console.log("init");
         refreshDataFromServer();
+        //refreshDataFromServer();
     }, []);
 
     return (

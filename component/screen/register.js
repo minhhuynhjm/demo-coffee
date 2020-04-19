@@ -17,19 +17,16 @@ import {
 import { globalStyles } from '../../styles/global'
 
 export default function Register() {
+
+    const [signUp, setSignUp] = useState(
+        { CategoryName: '', Decription: '', Parent: 0 }
+    );
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const onClickLogin = () => {
-
-    }
-
     const onClickRegister = () => {
 
-    }
-
-    const tabSignIn = () => {
-        //navigation.navigate('Login');
     }
 
     return (
@@ -66,7 +63,7 @@ export default function Register() {
                 <Button
                     title="Register"
                     color="#259269"
-                    onPress={onClickLogin}
+                    onPress={onClickRegister}
                 />
             </View>
         </View>
