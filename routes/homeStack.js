@@ -7,6 +7,7 @@ import Header from '../component/common/header';
 import Manager from '../component/screen/manager';
 import ShopCartIcon from '../component/screen/shopCartIcon';
 import Order from '../component/screen/order';
+import { useSelector, useDispatch } from "react-redux";
 
 import {
     StyleSheet,
@@ -48,41 +49,23 @@ function LogoTitle({ navigation }) {
     );
 }
 
-// function LogoRight() {
-//     return (
-//         <View style={{ position: 'absolute', height: 50, width: 50, borderRadius: 15 }}>
-//             <Text style={{ color: 'red', fontWeight:'bold' }}>0</Text>
-//             <Image
-//                 style={{ width: 50, height: 30 }}
-//                 source={{ uri: 'https://www.searchpng.com/wp-content/uploads/2019/02/Cart-PNG-Icon-715x715.png' }}
-//             />
-//         </View>
-//     );
-// }
-
-// const optionStack = {
-//     headerStyle: {
-//         backgroundColor: '#D5A169',
-//     },
-
-//     headerLeft: () => (
-//         <LogoLeft />
-//     ),
-//     headerTitle: () => (
-//         <LogoTitle />
-//     ),
-//     headerTitleAlign: 'center',
-
-//     headerRight: () => (
-//         <LogoRight />
-//     ),
-// }
-
+const config = {
+    animation: 'spring',
+    config: {
+        stiffness: 1000,
+        damping: 500,
+        mass: 3,
+        overshootClamping: true,
+        restDisplacementThreshold: 0.01,
+        restSpeedThreshold: 0.01,
+    },
+};
 
 export default function Navigator() {
+    const loginState = useSelector((state) => (state.loginReducer));
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="TabLoginResgister"
+            <Stack.Navigator
                 headerMode="float"
                 screenOptions={{
                     gestureEnabled: true,
@@ -94,62 +77,73 @@ export default function Navigator() {
                     },
                     headerTitleAlign: 'center',
                 }}>
+                {
+                    !loginState.isSignIn ? (
+                        <Stack.Screen name="TabLoginResgister" component={TabLoginResgister}
+                            options={({ navigation, route }) => ({
+                                headerLeft: () => (
+                                    <LogoLeft navigation={navigation} />
+                                ),
+                                headerTitle: null,
+                                transitionSpec: {
+                                    open: config,
+                                    close: config,
+                                },
+                            })}
+                        />
+                    ) : (
+                            <>
+                                <Stack.Screen name="Menu" component={Menu}
+                                    options={({ navigation, route }) => ({
 
-                <Stack.Screen name="TabLoginResgister" component={TabLoginResgister}
-                    options={({ navigation, route }) => ({
-                        headerLeft: () => (
-                            <LogoLeft navigation={navigation} />
-                        ),
-                        headerTitle: null,
-                    })}
-                />
+                                        headerLeft: () => (
+                                            <LogoLeft />
+                                        ),
+                                        headerTitle: () => (
+                                            <LogoTitle navigation={navigation} />
+                                        ),
+                                        headerRight: () => (
+                                            <ShopCartIcon navigation={navigation} />
+                                        ),
+                                    })}
+                                />
 
-                <Stack.Screen name="Menu" component={Menu}
-                    options={({ navigation, route }) => ({
+                                <Stack.Screen name="Manager" component={Manager}
+                                    options={({ navigation, route }) => ({
 
-                        headerLeft: () => (
-                            <LogoLeft />
-                        ),
-                        headerTitle: () => (
-                            <LogoTitle navigation={navigation} />
-                        ),
-                        headerRight: () => (
-                            <ShopCartIcon navigation={navigation} />
-                        ),
-                    })}
-                />
+                                        headerLeft: () => (
+                                            <LogoLeft navigation={navigation} />
+                                        ),
+                                        headerTitle: () => (
+                                            <LogoTitle navigation={navigation} />
+                                        ),
 
-                <Stack.Screen name="Manager" component={Manager}
-                    options={({ navigation, route }) => ({
+                                        // headerRight: () => (
+                                        //     <ShopCartIcon />
+                                        // ),
+                                    })}
+                                />
 
-                        headerLeft: () => (
-                            <LogoLeft navigation={navigation} />
-                        ),
-                        headerTitle: () => (
-                            <LogoTitle navigation={navigation} />
-                        ),
+                                <Stack.Screen name="Order" component={Order}
+                                    options={({ navigation, route }) => ({
 
-                        // headerRight: () => (
-                        //     <ShopCartIcon />
-                        // ),
-                    })}
-                />
+                                        headerLeft: () => (
+                                            <LogoLeft navigation={navigation} />
+                                        ),
+                                        headerTitle: () => (
+                                            <LogoTitle navigation={navigation} />
+                                        ),
 
-                <Stack.Screen name="Order" component={Order}
-                    options={({ navigation, route }) => ({
+                                        headerRight: () => (
+                                            <ShopCartIcon />
+                                        ),
+                                    })}
+                                />
+                            </>
+                        )
+                }
 
-                        headerLeft: () => (
-                            <LogoLeft navigation={navigation} />
-                        ),
-                        headerTitle: () => (
-                            <LogoTitle navigation={navigation} />
-                        ),
 
-                        headerRight: () => (
-                            <ShopCartIcon />
-                        ),
-                    })}
-                />
 
             </Stack.Navigator>
         </NavigationContainer>

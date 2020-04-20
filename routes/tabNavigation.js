@@ -5,11 +5,11 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function TabNavigation(){
+export default function TabNavigation() {
   return (
-      <Tab.Navigator>
-        <Tab.Screen name="Login" component={Login}/>
-        <Tab.Screen name="Register" component={Register} />
-      </Tab.Navigator> 
+    <Tab.Navigator>
+      <Tab.Screen name="Login" component={Login} />
+      <Tab.Screen name="Register" component={Register} />
+    </Tab.Navigator>
   );
 }

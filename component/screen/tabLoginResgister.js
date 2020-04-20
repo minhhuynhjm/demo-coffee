@@ -14,11 +14,12 @@ import {
     AsyncStorage
 } from 'react-native';
 import TabNavigation from '../../routes/tabNavigation'
-import Headers from '../common/header';
+import Header from './header'
 
 export default function TabLoginResgister() {
     return (
         <View>
+            <Header></Header>
             <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: "center" }}>
                 <View style={styles.mainForm}>
                     <TabNavigation></TabNavigation>
@@ -31,12 +32,8 @@ export default function TabLoginResgister() {
 
 
 const styles = StyleSheet.create({
-    text: {
-        fontSize: 20
-    },
     mainForm: {
         backgroundColor: 'white',
-        margin: 20,
         padding: 30,
         width: 300,
         height: 500,
@@ -50,13 +47,5 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         elevation: 9,
 
-    },
-    input: {
-        width: 200,
-        height: 44,
-        padding: 10,
-        borderWidth: 1,
-        borderColor: 'black',
-        marginBottom: 10,
-    },
+    }
 });

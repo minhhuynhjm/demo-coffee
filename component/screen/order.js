@@ -11,13 +11,16 @@ import {
     Image,
     Alert,
     ToastAndroid,
-    AsyncStorage
+    AsyncStorage,
+    Dimensions,
+    ScrollView
 } from 'react-native';
-import Headers from '../common/header';
+
 import menuData from '../../mock-data/menuData';
 import { actionTypes } from "../../redux/actions/actionTypes"
 import { addProductToCart, removeProductToCart } from '../../redux/actions'
 import { useSelector, useDispatch } from "react-redux";
+import Header from './header'
 
 function FlatListItem({ item, index }) {
     const dispatch = useDispatch();
@@ -27,9 +30,8 @@ function FlatListItem({ item, index }) {
     }
 
     return (
-        <View>
-            <View style={{ flex: 1, flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
-
+        <View style={{}}>
+            <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
                 <View style={{ margin: 10, backgroundColor: '#d1d1d1', borderRadius: 8, height: 40, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={{ width: 80, textAlign: 'center' }}> {item.name}</Text>
                 </View>
@@ -53,22 +55,38 @@ export default function Order({ navigation }) {
     const orderData = props.addedItems;
     let totalPrice = props.totalPrice;
     let countTotalItem = props.countTotalItem;
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+
+    const onClickButtonOrder = () => {
+        ToastAndroid.showWithGravity(
+            "order successfully !!",
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER,
+        );
+    }
+
     return (
-        <View style={{ alignItems: 'center' }}>
-            <View style={{ alignItems: 'center' }}>
+        <View>
+            <Header></Header>
+            <View style={{ alignItems: 'center', flexDirection: 'column', display: 'flex', height: '80%' }}>
                 <View style={{ backgroundColor: '#83bbb9', borderBottomLeftRadius: 5, borderBottomRightRadius: 5, paddingLeft: 5, paddingRight: 5, paddingBottom: 3 }}>
                     <Text style={{ color: 'white', fontWeight: "bold" }}>Order Confirm</Text>
                 </View>
-                <FlatList
-                    data={orderData}
-                    renderItem={({ item, index }) => <FlatListItem item={item} index={index}></FlatListItem>}
-                    keyExtractor={(item) => `key-${item.id}`}
-                    extraData={props}
-                >
-                </FlatList>
-                <View style={{ flex: 1, flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
+                <View style={{}}>
+                    <FlatList
+                        style={{ flexGrow: 0 }}
+                        data={orderData}
+                        renderItem={({ item, index }) => <FlatListItem item={item} index={index}></FlatListItem>}
+                        keyExtractor={(item) => `key-${item.id}`}
+                        extraData={props}
+                    >
+                    </FlatList>
+                </View>
+                <View style={{}}>
                     {countTotalItem > 0 ? (
-                        <View style={{ flex: 1, flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
+
                             <View style={{ margin: 10 }}>
                                 <Text> Count: {countTotalItem} </Text>
                             </View>
@@ -82,6 +100,21 @@ export default function Order({ navigation }) {
                         </View>
                     }
                 </View>
+
+            </View>
+            <View style={{ alignSelf: 'flex-end', padding: 5 }}>
+                <TouchableOpacity onPress={onClickButtonOrder}>
+                    <View style={{
+                        backgroundColor: "#259269",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: 80,
+                        height: 40,
+                        borderRadius: 10
+                    }}>
+                        <Text style={{ color: 'white' }}>Order</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         </View>
     );

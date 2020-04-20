@@ -14,23 +14,40 @@ import {
     AsyncStorage
 } from 'react-native';
 
-import { globalStyles } from '../../styles/global'
+import { globalStyles } from '../../styles/global';
+import userData from '../../mock-data/userData';
+import { useSelector, useDispatch } from "react-redux";
+import { userLogin, userLogout } from '../../redux/actions'
 
 export default function Login({ navigation }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
 
-    const onClickLogin = () => {
-        navigation.navigate('Menu')
+    const onClickButtonLogin = () => {
+        const userIndex = userData.findIndex(x => x.staffId === username && x.password == password);
+        if (userIndex !== -1) {
+            let user_login = {
+                staffid: username,
+                password: password,
+                point: userData[userIndex].point
+            }
+            dispatch(userLogin(user_login));
+            //navigation?.navigate('Menu');
+        }
+        else {
+            Alert.alert("Login failed");
+        }
+
     }
 
-    const onClickRegister = () => {
+    // const onClickButtonLogout = () => {
+    //     dispatch(userLogout());
+    // }
 
-    }
-
-    const tabSignUp = () => {
-        //navigation.navigate('Register')
-    }
+    // const onClickButtonState = () => {
+    //     navigation?.navigate('Menu');
+    // }
 
     return (
         <View style={{ paddingTop: 15, backgroundColor: '#FFF', flex: 1 }}>
@@ -57,9 +74,10 @@ export default function Login({ navigation }) {
                 <Button
                     title="Login"
                     color="#259269"
-                    onPress={onClickLogin}
+                    onPress={onClickButtonLogin}
                 />
             </View>
+
         </View>
     );
 }

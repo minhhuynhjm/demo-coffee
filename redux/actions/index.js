@@ -13,3 +13,16 @@ export const removeProductToCart = (item) => {
         payload: item
     }
 }
+
+export const userLogin = (item) => {
+    return {
+        type: actionTypes.USER_LOGIN,
+        payload: item
+    }
+}
+
+export const userLogout = () => {
+    return {
+        type: actionTypes.USER_LOGOUT,
+    }
+}

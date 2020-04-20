@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import {
     StyleSheet,
     Text,
@@ -16,7 +16,8 @@ import {
 import menuData from '../../mock-data/menuData';
 import { actionTypes } from "../../redux/actions/actionTypes"
 import { useSelector, useDispatch } from "react-redux";
-import { addProductToCart, removeProductToCart } from '../../redux/actions'
+import { addProductToCart, removeProductToCart, userLogout } from '../../redux/actions'
+import Header from './header'
 
 function FlatListItem({ item, index }) {
 
@@ -33,7 +34,6 @@ function FlatListItem({ item, index }) {
     return (
         <View>
             <View style={{ flex: 1, flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
-
                 <View style={{ margin: 10, backgroundColor: '#d1d1d1', borderRadius: 8, height: 40, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={{ width: 80, textAlign: 'center' }}> {item.name}</Text>
                 </View>
@@ -75,8 +75,17 @@ export default function Menu({ navigation }) {
     const listItem = props.addedItems;
     const mergeData = merge(menuData, listItem);
 
+    const loginState = useSelector((state) => (state.loginReducer));
+
+    const dispatch = useDispatch();
+    const onClickButtonLogout = () => {
+        dispatch(userLogout());
+        //navigation?.navigate('TabLoginResgister');
+    }
+
     return (
         <View>
+            <Header></Header>
             <View style={{ alignItems: 'center' }}>
                 <View style={{ backgroundColor: '#83bbb9', borderBottomLeftRadius: 5, borderBottomRightRadius: 5, paddingLeft: 5, paddingRight: 5, paddingBottom: 3 }}>
                     <Text style={{ color: 'white', fontWeight: "bold" }}>Menu</Text>
@@ -87,6 +96,13 @@ export default function Menu({ navigation }) {
                     keyExtractor={(item) => `key-${item.id}`}
                     extraData={props}
                 ></FlatList>
+            </View>
+            <View style={[{ margin: 10, alignItems: 'center' }]}>
+                <Button
+                    title="Logout"
+                    color="#259269"
+                    onPress={onClickButtonLogout}
+                />
             </View>
         </View>
     );

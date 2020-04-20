@@ -14,7 +14,7 @@ import { persistor, store } from "./redux/store/asyncStorage";
 export default function App() {
   return (
     <Provider store={store}>
-      <PersistGate loading={<Manager />} persistor={persistor}>
+      <PersistGate loading={null} persistor={persistor}>
         <Navigator></Navigator>
       </PersistGate>
     </Provider>
