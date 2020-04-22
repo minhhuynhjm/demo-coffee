@@ -1,5 +1,6 @@
-import React from 'react';
-import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import React, { useRef } from 'react';
+import Toast from 'react-native-easy-toast';
+import { StyleSheet, Text, View, AsyncStorage, Button } from 'react-native';
 import Navigator from './routes/homeStack'
 import Headers from './component/common/header'
 import { createStore, combineReducers } from 'redux';
@@ -21,3 +22,15 @@ export default function App() {
     </Provider>
   );
 }
+// const App = () => {
+//   const toastRef = useRef();
+
+//   return (
+//     <View style={{ marginTop: 50 }}>
+//       <Button title="Show Toast" onPress={() => toastRef.current.show('hello world!')} />
+//       <Toast ref={toastRef} />
+//     </View>
+//   );
+// };
+
+// export default App;

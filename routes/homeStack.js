@@ -33,8 +33,8 @@ function LogoLeft({ navigation }) {
     return (
         <TouchableOpacity onPress={() => navigation?.navigate('Menu')}>
             <Image
-                style={{ width: 50, height: 50 }}
-                source={{ uri: 'https://pngimage.net/wp-content/uploads/2018/05/cafe-icon-png-8.png' }}
+                style={{ width: 45, height: 45, marginLeft: 10, marginBottom: 1 }}
+                source={require('../assets/food.png')}
             />
         </TouchableOpacity>
     );
@@ -44,8 +44,8 @@ function LogoTitle({ navigation }) {
     return (
         <TouchableOpacity onPress={() => navigation?.navigate('TabAccountManagement')}>
             <Image
-                style={{ width: 60, height: 50 }}
-                source={{ uri: 'https://img.icons8.com/clouds/2x/home.png' }}
+                style={{ width: 45, height: 45 }}
+                source={require('../assets/management.png')}
             />
         </TouchableOpacity>
     );
@@ -85,7 +85,7 @@ export default function Navigator() {
                             <Stack.Screen name="TabLoginResgister" component={TabLoginResgister}
                                 options={({ navigation, route }) => ({
                                     headerLeft: () => (
-                                        <LogoLeft navigation={navigation} />
+                                        <LogoLeft />
                                     ),
                                     headerTitle: null,
 

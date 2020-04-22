@@ -14,7 +14,7 @@ export const globalStyles = StyleSheet.create({
         borderColor: '#a5a5a5',
         margin: 10,
         borderRadius: 10,
-        fontSize: 14
+        fontSize: 14,
     },
     container: {
         backgroundColor: 'white',
@@ -48,5 +48,13 @@ export const globalStyles = StyleSheet.create({
         paddingTop: 15,
         backgroundColor: 'white',
         flex: 1
+    },
+    cardCenter: {
+        backgroundColor: '#83bbb9',
+        borderBottomLeftRadius: 5,
+        borderBottomRightRadius: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        marginBottom: 10
     }
 });

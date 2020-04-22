@@ -42,7 +42,7 @@ const menuData = [{
 }, {
     "id": 10,
     "price": 44,
-    "name": "Americano4",
+    "name": "Americano",
 
 }, {
     "id": 11,

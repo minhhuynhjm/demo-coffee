@@ -80,7 +80,7 @@ export default function Menu({ navigation }) {
             </View>
             <View style={[globalStyles.content, globalStyles.bgColorGray]}>
                 <View style={styles.wrapperContent}>
-                    <View style={styles.viewMenu}>
+                    <View style={globalStyles.cardCenter}>
                         <Text style={styles.textMenu}>Menu</Text>
                     </View>
                     <FlatList
@@ -116,14 +116,6 @@ const styles = StyleSheet.create({
     wrapperContent: {
         alignItems: 'center'
     },
-    viewMenu: {
-        backgroundColor: '#83bbb9',
-        borderBottomLeftRadius: 5,
-        borderBottomRightRadius: 5,
-        paddingLeft: 5,
-        paddingRight: 5,
-        paddingBottom: 3
-    },
     textMenu: {
         color: 'white',
         fontWeight: "bold"
@@ -145,7 +137,8 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     flatListMarginItem: {
-        margin: 10
+        marginBottom: 10,
+        marginHorizontal: 10
     },
     flatListItemTextInput: {
         borderWidth: 1,
