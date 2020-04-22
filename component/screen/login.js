@@ -22,9 +22,13 @@ import { userLogin, userLogout } from '../../redux/actions'
 export default function Login({ navigation }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const txtUsername = useRef(null);
-    const txtPassword = useRef(null);
+    const usernameRef = useRef(null);
+    const passwordRef = useRef(null);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        usernameRef.current.focus();
+    }, []);
 
     const onClickButtonLogin = () => {
         const trimStaffId = username.trim();
@@ -44,7 +48,7 @@ export default function Login({ navigation }) {
         else {
 
             if (username.trim() === '' && password.trim() === '') {
-                txtUsername.current.focus();
+                usernameRef.current.focus();
                 Alert.alert(
                     "Notification",
                     "Please input staffid and password !",
@@ -64,7 +68,6 @@ export default function Login({ navigation }) {
                     { cancelable: false }
                 );
             }
-            //alert("Login failed");
         }
     }
 
@@ -85,8 +88,8 @@ export default function Login({ navigation }) {
                 value={username}
                 placeholder={'Username'}
                 autoCapitalize='none'
-                ref={txtUsername}
-                onSubmitEditing={() => txtPassword.current.focus()}
+                ref={usernameRef}
+                onSubmitEditing={() => passwordRef.current.focus()}
                 returnKeyType="next"
             />
 
@@ -97,7 +100,7 @@ export default function Login({ navigation }) {
                 value={password}
                 secureTextEntry={true}
                 placeholder={'Password'}
-                ref={txtPassword}
+                ref={passwordRef}
                 autoCapitalize='none'
                 onSubmitEditing={onClickButtonLogin}
             />
