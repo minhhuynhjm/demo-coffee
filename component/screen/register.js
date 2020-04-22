@@ -30,7 +30,7 @@ export default function Register() {
     }
 
     return (
-        <View style={{ paddingTop: 15, backgroundColor: '#FFF', flex: 1 }}>
+        <View style={globalStyles.viewWrapperForm}>
             <Text style={globalStyles.text}>Staff ID</Text>
             <TextInput
                 style={globalStyles.input}
@@ -59,7 +59,7 @@ export default function Register() {
                 autoCapitalize='none'
             />
 
-            <View style={[{ margin: 10, alignItems: 'center' }]}>
+            <View style={{ margin: 10, alignItems: 'center' }}>
                 <Button
                     title="Register"
                     color="#259269"

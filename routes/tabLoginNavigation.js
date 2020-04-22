@@ -5,9 +5,9 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function TabNavigation() {
+export default function TabLoginNavigation() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator tabBarOptions={{ labelStyle: { textTransform: 'capitalize' } }}>
       <Tab.Screen name="Login" component={Login} />
       <Tab.Screen name="Register" component={Register} />
     </Tab.Navigator>

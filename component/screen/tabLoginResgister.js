@@ -11,18 +11,24 @@ import {
     Image,
     Alert,
     ToastAndroid,
+    Dimensions,
     AsyncStorage
 } from 'react-native';
-import TabNavigation from '../../routes/tabNavigation'
+import TabLoginNavigation from '../../routes/tabLoginNavigation'
 import Header from './header'
+import { globalStyles } from '../../styles/global'
 
 export default function TabLoginResgister() {
     return (
-        <View>
-            <Header></Header>
-            <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: "center" }}>
-                <View style={styles.mainForm}>
-                    <TabNavigation></TabNavigation>
+        <View style={globalStyles.container}>
+            <View style={globalStyles.header}>
+                <Header></Header>
+            </View>
+            <View style={globalStyles.content}>
+                <View style={globalStyles.contentAndAlignCenter}>
+                    <View style={styles.mainForm}>
+                        <TabLoginNavigation></TabLoginNavigation>
+                    </View>
                 </View>
             </View>
         </View>
@@ -30,13 +36,14 @@ export default function TabLoginResgister() {
     );
 }
 
+const heightWindow = Dimensions.get('window').height * 0.7;
 
 const styles = StyleSheet.create({
     mainForm: {
         backgroundColor: 'white',
-        padding: 30,
+        padding: 20,
         width: 300,
-        height: 500,
+        height: heightWindow,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -46,6 +53,5 @@ const styles = StyleSheet.create({
         shadowRadius: 5.46,
         borderRadius: 20,
         elevation: 9,
-
     }
 });

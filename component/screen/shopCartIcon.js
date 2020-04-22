@@ -13,7 +13,10 @@ export default function ShopCartIcon({ navigation }) {
     const props = useSelector((state) => (state.cartReducer));
 
     const clickOrder = () => {
-        navigation?.navigate('Order')
+        navigation?.navigate('Order', {
+            itemId: 86,
+            otherParam: 'anything you want here',
+        })
     }
 
     return (

@@ -22,6 +22,44 @@ const menuData = [{
     "id": 6,
     "price": 44,
     "name": "Americano",
-}]
+
+}
+    , {
+    "id": 7,
+    "price": 44,
+    "name": "Americano1",
+
+}, {
+    "id": 8,
+    "price": 44,
+    "name": "Americano2",
+
+}, {
+    "id": 9,
+    "price": 44,
+    "name": "Americano3",
+
+}, {
+    "id": 10,
+    "price": 44,
+    "name": "Americano4",
+
+}, {
+    "id": 11,
+    "price": 44,
+    "name": "Americano5",
+
+}, {
+    "id": 12,
+    "price": 44,
+    "name": "Americano6",
+
+}, {
+    "id": 14,
+    "price": 44,
+    "name": "Americano7",
+
+}
+]
 
 export default menuData;

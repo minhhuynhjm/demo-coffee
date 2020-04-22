@@ -7,18 +7,18 @@ import React from 'react';
 
 export default function Header() {
     return (
-        <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', height: '10%' }}>
-            <Text style={{ fontWeight: 'bold' }}> INTAGE COFFEE </Text>
-            {/* <View style={styles.lineStyle} /> */}
+        <View style={styles.wapperView}>
+            <Text style={styles.hrLine}> INTAGE COFFEE </Text>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    lineStyle: {
-        borderWidth: 0.5,
-        borderColor: 'black',
-        margin: 10,
+    wapperView: {
+        alignItems: 'center',
+    },
+    hrLine: {
+        fontWeight: 'bold', fontSize: 26, borderBottomColor: 'black', borderBottomWidth: 1
     }
 });
 

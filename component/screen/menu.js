@@ -18,6 +18,7 @@ import { actionTypes } from "../../redux/actions/actionTypes"
 import { useSelector, useDispatch } from "react-redux";
 import { addProductToCart, removeProductToCart, userLogout } from '../../redux/actions'
 import Header from './header'
+import { globalStyles } from '../../styles/global'
 
 function FlatListItem({ item, index }) {
 
@@ -32,40 +33,30 @@ function FlatListItem({ item, index }) {
     }
 
     return (
-        <View>
-            <View style={{ flex: 1, flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
-                <View style={{ margin: 10, backgroundColor: '#d1d1d1', borderRadius: 8, height: 40, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ width: 80, textAlign: 'center' }}> {item.name}</Text>
-                </View>
-
-                <View style={{ margin: 10 }}>
-                    <Text> {item.price} $</Text>
-                </View>
-
-                <View style={{ margin: 10, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
-                    <TouchableOpacity onPress={pressSubButton} disabled={item.quantity === 0} >
-                        <Text style={{ fontSize: 30, textAlign: 'center' }}> - </Text>
-                    </TouchableOpacity>
-
-                    <TextInput style={{
-                        borderWidth: 1,
-                        borderColor: 'black',
-                        justifyContent: 'center',
-                        width: 50,
-                        height: 25,
-                        textAlign: 'center'
-                    }}
-                        editable={false}
-                        keyboardType='numeric'
-                        // onChangeText={value => setNum(value >= 0 ? value : 0)}
-                        value={`${item.quantity}`} ></TextInput>
-
-                    <TouchableOpacity onPress={pressAddButton}>
-                        <Text style={{ fontSize: 30, textAlign: 'center' }}> + </Text>
-                    </TouchableOpacity>
-                </View>
+        <View style={styles.flatListItemWrapper}>
+            <View style={[styles.flatListMarginItem, styles.flatListItemViewProduct]}>
+                <Text style={styles.flatListItemTextProduct}> {item.name}</Text>
             </View>
-            <View style={{ height: 1, backgroundColor: "white" }}></View>
+
+            <View style={styles.flatListMarginItem}>
+                <Text> {item.price} $</Text>
+            </View>
+
+            <View style={[styles.flatListMarginItem, styles.flatListItemWrapper]} >
+                <TouchableOpacity onPress={pressSubButton} disabled={item.quantity === 0} >
+                    <Text style={styles.flatListItemButtonAdd}> - </Text>
+                </TouchableOpacity>
+
+                <TextInput style={styles.flatListItemTextInput}
+                    editable={false}
+                    keyboardType='numeric'
+                    // onChangeText={value => setNum(value >= 0 ? value : 0)}
+                    value={`${item.quantity}`} >
+                </TextInput>
+                <TouchableOpacity onPress={pressAddButton}>
+                    <Text style={styles.flatListItemButtonAdd}> + </Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -80,34 +71,39 @@ export default function Menu({ navigation }) {
     const dispatch = useDispatch();
     const onClickButtonLogout = () => {
         dispatch(userLogout());
-        //navigation?.navigate('TabLoginResgister');
     }
 
     return (
-        <View>
-            <Header></Header>
-            <View style={{ alignItems: 'center' }}>
-                <View style={{ backgroundColor: '#83bbb9', borderBottomLeftRadius: 5, borderBottomRightRadius: 5, paddingLeft: 5, paddingRight: 5, paddingBottom: 3 }}>
-                    <Text style={{ color: 'white', fontWeight: "bold" }}>Menu</Text>
-                </View>
-                <FlatList
-                    data={mergeData}
-                    renderItem={({ item, index }) => <FlatListItem item={item} index={index} ></FlatListItem>}
-                    keyExtractor={(item) => `key-${item.id}`}
-                    extraData={props}
-                ></FlatList>
+        <View style={globalStyles.container}>
+            <View style={globalStyles.header}>
+                <Header></Header>
             </View>
-            <View style={[{ margin: 10, alignItems: 'center' }]}>
-                <Button
-                    title="Logout"
-                    color="#259269"
-                    onPress={onClickButtonLogout}
-                />
+            <View style={[globalStyles.content, globalStyles.bgColorGray]}>
+                <View style={styles.wrapperContent}>
+                    <View style={styles.viewMenu}>
+                        <Text style={styles.textMenu}>Menu</Text>
+                    </View>
+                    <FlatList
+                        style={{ height: "85%" }}
+                        data={mergeData}
+                        renderItem={({ item, index }) => <FlatListItem item={item} index={index} ></FlatListItem>}
+                        keyExtractor={(item) => `key-${item.id}`}
+                        extraData={props}
+                    ></FlatList>
+                </View>
+                <View style={[{ margin: 10, alignItems: 'center' }]}>
+                    <Button
+                        title="Logout"
+                        color="#259269"
+                        onPress={onClickButtonLogout}
+                    />
+                </View>
             </View>
         </View>
     );
 }
 
+// Merge state 
 const merge = (array1 = [], array2 = []) => {
     return array1.map(a1 => {
         const index = array2.findIndex(a2 => a2.id === a1.id);
@@ -117,5 +113,50 @@ const merge = (array1 = [], array2 = []) => {
 }
 
 const styles = StyleSheet.create({
-
+    wrapperContent: {
+        alignItems: 'center'
+    },
+    viewMenu: {
+        backgroundColor: '#83bbb9',
+        borderBottomLeftRadius: 5,
+        borderBottomRightRadius: 5,
+        paddingLeft: 5,
+        paddingRight: 5,
+        paddingBottom: 3
+    },
+    textMenu: {
+        color: 'white',
+        fontWeight: "bold"
+    },
+    flatListItemWrapper: {
+        flexDirection: "row",
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    flatListItemViewProduct: {
+        backgroundColor: '#d1d1d1',
+        borderRadius: 8,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    flatListItemTextProduct: {
+        width: 80,
+        textAlign: 'center'
+    },
+    flatListMarginItem: {
+        margin: 10
+    },
+    flatListItemTextInput: {
+        borderWidth: 1,
+        borderColor: 'black',
+        justifyContent: 'center',
+        width: 50,
+        height: 25,
+        textAlign: 'center'
+    },
+    flatListItemButtonAdd: {
+        fontSize: 30,
+        textAlign: 'center'
+    }
 });

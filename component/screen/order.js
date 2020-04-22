@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     StyleSheet,
     Text,
@@ -16,48 +16,51 @@ import {
     ScrollView
 } from 'react-native';
 
+import Toast from 'react-native-easy-toast';
+
 import menuData from '../../mock-data/menuData';
 import { actionTypes } from "../../redux/actions/actionTypes"
 import { addProductToCart, removeProductToCart } from '../../redux/actions'
 import { useSelector, useDispatch } from "react-redux";
 import Header from './header'
+import { globalStyles } from '../../styles/global'
 
 function FlatListItem({ item, index }) {
     const dispatch = useDispatch();
     const pressSubButton = () => {
-        //dispatch({ type: actionTypes.REMOVE_PRODUCT_FROM_CART, payload: item });
         dispatch(removeProductToCart(item));
     }
 
     return (
         <View style={{}}>
-            <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
-                <View style={{ margin: 10, backgroundColor: '#d1d1d1', borderRadius: 8, height: 40, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ width: 80, textAlign: 'center' }}> {item.name}</Text>
+            <View style={globalStyles.flexRowAndCenter}>
+                <View style={[styles.flatListItemProductView, styles.marginItem, globalStyles.contentAndAlignCenter]}>
+                    <Text style={styles.flatListItemProductText}> {item.name}</Text>
                 </View>
-                <View style={{ margin: 10 }}>
+                <View style={styles.marginItem}>
                     <Text> {item.quantity} </Text>
                 </View>
-                <View style={{ margin: 10 }}>
+                <View style={styles.marginItem}>
                     <Text> {item.quantity * item.price} $</Text>
                 </View>
                 <TouchableOpacity onPress={pressSubButton} >
-                    <Text style={{ fontSize: 30, textAlign: 'center' }}> - </Text>
+                    <Text style={styles.flatListItemButtonAdd}> - </Text>
                 </TouchableOpacity>
             </View>
-            <View style={{ height: 1, backgroundColor: "white" }}></View>
+
         </View>
     );
 }
 
-export default function Order({ navigation }) {
+export default function Order({ route, navigation }) {
+    const toastRef = useRef();
+
     const props = useSelector((state) => (state.cartReducer));
     const orderData = props.addedItems;
     let totalPrice = props.totalPrice;
     let countTotalItem = props.countTotalItem;
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
-
     const onClickButtonOrder = () => {
         ToastAndroid.showWithGravity(
             "order successfully !!",
@@ -67,15 +70,17 @@ export default function Order({ navigation }) {
     }
 
     return (
-        <View>
-            <Header></Header>
-            <View style={{ alignItems: 'center', flexDirection: 'column', display: 'flex', height: '80%' }}>
-                <View style={{ backgroundColor: '#83bbb9', borderBottomLeftRadius: 5, borderBottomRightRadius: 5, paddingLeft: 5, paddingRight: 5, paddingBottom: 3 }}>
-                    <Text style={{ color: 'white', fontWeight: "bold" }}>Order Confirm</Text>
-                </View>
-                <View style={{}}>
+        <View style={globalStyles.container}>
+            <View style={globalStyles.header}>
+                <Header></Header>
+            </View>
+            <View style={[globalStyles.content, globalStyles.bgColorGray]}>
+                <View style={styles.alignItemsCenter}>
+                    <View style={styles.orderConfirmView}>
+                        <Text style={styles.orderConfirmText}>Order Confirm</Text>
+                    </View>
                     <FlatList
-                        style={{ flexGrow: 0 }}
+                        style={styles.flexGrowNone}
                         data={orderData}
                         renderItem={({ item, index }) => <FlatListItem item={item} index={index}></FlatListItem>}
                         keyExtractor={(item) => `key-${item.id}`}
@@ -85,13 +90,14 @@ export default function Order({ navigation }) {
                 </View>
                 <View style={{}}>
                     {countTotalItem > 0 ? (
-                        <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
-
-                            <View style={{ margin: 10 }}>
-                                <Text> Count: {countTotalItem} </Text>
-                            </View>
-                            <View style={{ margin: 10 }}>
-                                <Text> Total Price: {totalPrice} $</Text>
+                        <View style={[globalStyles.flexRowAndCenter]}>
+                            <View style={styles.hrLine}>
+                                <View style={styles.marginItem}>
+                                    <Text> Count: {countTotalItem} </Text>
+                                </View>
+                                <View style={styles.marginItem}>
+                                    <Text> Total Price: {totalPrice} $</Text>
+                                </View>
                             </View>
                         </View>
                     ) :
@@ -100,22 +106,75 @@ export default function Order({ navigation }) {
                         </View>
                     }
                 </View>
-
-            </View>
-            <View style={{ alignSelf: 'flex-end', padding: 5 }}>
-                <TouchableOpacity onPress={onClickButtonOrder}>
-                    <View style={{
-                        backgroundColor: "#259269",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: 80,
-                        height: 40,
-                        borderRadius: 10
-                    }}>
-                        <Text style={{ color: 'white' }}>Order</Text>
-                    </View>
-                </TouchableOpacity>
+                <View style={globalStyles.flexAuto}>
+                </View>
+                <View style={styles.orderViewButtonWrap}>
+                    <TouchableOpacity onPress={onClickButtonOrder}>
+                        <View style={styles.orderViewButton}>
+                            <Text style={styles.orderViewButtonText}>Order</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <Toast ref={toastRef} />
             </View>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    alignItemsCenter: {
+        alignItems: 'center',
+        height: '70%',
+    },
+    orderConfirmView: {
+        backgroundColor: '#83bbb9',
+        borderBottomLeftRadius: 5,
+        borderBottomRightRadius: 5,
+        paddingLeft: 5,
+        paddingRight: 5,
+        paddingBottom: 3
+    },
+    orderConfirmText: {
+        color: 'white',
+        fontWeight: "bold"
+    },
+    flexGrowNone: {
+        flexGrow: 0,
+    },
+    hrLine: {
+        borderTopColor: 'black',
+        borderTopWidth: 1,
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+    marginItem: {
+        margin: 10
+    },
+    orderViewButton: {
+        backgroundColor: "#259269",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 80,
+        height: 40,
+        borderRadius: 10
+    },
+    flatListItemProductView: {
+        backgroundColor: '#d1d1d1',
+        borderRadius: 8,
+        height: 40,
+    },
+    flatListItemProductText: {
+        width: 80,
+        textAlign: 'center'
+    },
+    flatListItemButtonAdd: {
+        fontSize: 30, textAlign: 'center'
+    },
+    orderViewButtonWrap: {
+        alignSelf: 'flex-end',
+        padding: 10,
+    },
+    orderViewButtonText: {
+        color: 'white'
+    }
+});

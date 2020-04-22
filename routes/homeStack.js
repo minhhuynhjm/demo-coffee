@@ -4,10 +4,12 @@ import { createStackNavigator, TransitionPresets, CardStyleInterpolators } from 
 import Menu from '../component/screen/menu';
 import TabLoginResgister from '../component/screen/tabLoginResgister';
 import Header from '../component/common/header';
-import Manager from '../component/screen/manager';
+import TabAccountManagement from '../component/screen/tabAccountManagement';
 import ShopCartIcon from '../component/screen/shopCartIcon';
 import Order from '../component/screen/order';
+import TestFlex from '../component/screen/testFlex'
 import { useSelector, useDispatch } from "react-redux";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import {
     StyleSheet,
@@ -40,7 +42,7 @@ function LogoLeft({ navigation }) {
 
 function LogoTitle({ navigation }) {
     return (
-        <TouchableOpacity onPress={() => navigation?.navigate('Manager')}>
+        <TouchableOpacity onPress={() => navigation?.navigate('TabAccountManagement')}>
             <Image
                 style={{ width: 60, height: 50 }}
                 source={{ uri: 'https://img.icons8.com/clouds/2x/home.png' }}
@@ -64,67 +66,34 @@ const config = {
 export default function Navigator() {
     const loginState = useSelector((state) => (state.loginReducer));
     return (
-        <NavigationContainer>
-            <Stack.Navigator
-                headerMode="float"
-                screenOptions={{
-                    gestureEnabled: true,
-                    gestureDirection: "horizontal",
-                    headerBackTitleVisible: false,
-                    cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-                    headerStyle: {
-                        backgroundColor: '#D5A169',
-                    },
-                    headerTitleAlign: 'center',
-                }}>
-                {
-                    !loginState.isSignIn ? (
-                        <Stack.Screen name="TabLoginResgister" component={TabLoginResgister}
-                            options={({ navigation, route }) => ({
-                                headerLeft: () => (
-                                    <LogoLeft navigation={navigation} />
-                                ),
-                                headerTitle: null,
-                                transitionSpec: {
-                                    open: config,
-                                    close: config,
-                                },
-                            })}
-                        />
-                    ) : (
-                            <>
-                                <Stack.Screen name="Menu" component={Menu}
-                                    options={({ navigation, route }) => ({
+        <SafeAreaProvider>
+            <NavigationContainer>
+                <Stack.Navigator
+                    headerMode="float"
+                    screenOptions={{
+                        gestureEnabled: true,
+                        gestureDirection: "horizontal",
+                        headerBackTitleVisible: false,
+                        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                        headerStyle: {
+                            backgroundColor: '#D5A169',
+                        },
+                        headerTitleAlign: 'center',
+                    }}>
+                    {
+                        !loginState.isSignIn ? (
+                            <Stack.Screen name="TabLoginResgister" component={TabLoginResgister}
+                                options={({ navigation, route }) => ({
+                                    headerLeft: () => (
+                                        <LogoLeft navigation={navigation} />
+                                    ),
+                                    headerTitle: null,
 
-                                        headerLeft: () => (
-                                            <LogoLeft />
-                                        ),
-                                        headerTitle: () => (
-                                            <LogoTitle navigation={navigation} />
-                                        ),
-                                        headerRight: () => (
-                                            <ShopCartIcon navigation={navigation} />
-                                        ),
-                                    })}
-                                />
-
-                                <Stack.Screen name="Manager" component={Manager}
-                                    options={({ navigation, route }) => ({
-
-                                        headerLeft: () => (
-                                            <LogoLeft navigation={navigation} />
-                                        ),
-                                        headerTitle: () => (
-                                            <LogoTitle navigation={navigation} />
-                                        ),
-
-                                        // headerRight: () => (
-                                        //     <ShopCartIcon />
-                                        // ),
-                                    })}
-                                />
-
-                                <Stack.Screen name="Order" component={Order}
+                                })}
+                            />
+                        ) : (
+                                <>
+                                    {/* <Stack.Screen name="TestFlex" component={TestFlex}
                                     options={({ navigation, route }) => ({
 
                                         headerLeft: () => (
@@ -138,15 +107,56 @@ export default function Navigator() {
                                             <ShopCartIcon />
                                         ),
                                     })}
-                                />
-                            </>
-                        )
-                }
+                                /> */}
 
+                                    <Stack.Screen name="Menu" component={Menu}
+                                        options={({ navigation, route }) => ({
 
+                                            headerLeft: () => (
+                                                <LogoLeft />
+                                            ),
+                                            headerTitle: () => (
+                                                <LogoTitle navigation={navigation} />
+                                            ),
+                                            headerRight: () => (
+                                                <ShopCartIcon navigation={navigation} />
+                                            ),
+                                        })}
+                                    />
 
-            </Stack.Navigator>
-        </NavigationContainer>
+                                    <Stack.Screen name="TabAccountManagement" component={TabAccountManagement}
+                                        options={({ navigation, route }) => ({
+
+                                            headerLeft: () => (
+                                                <LogoLeft navigation={navigation} />
+                                            ),
+                                            headerTitle: () => (
+                                                <LogoTitle navigation={navigation} />
+                                            ),
+                                        })}
+                                    />
+
+                                    <Stack.Screen name="Order" component={Order}
+                                        options={({ navigation, route }) => ({
+
+                                            headerLeft: () => (
+                                                <LogoLeft navigation={navigation} />
+                                            ),
+                                            headerTitle: () => (
+                                                <LogoTitle navigation={navigation} />
+                                            ),
+
+                                            headerRight: () => (
+                                                <ShopCartIcon />
+                                            ),
+                                        })}
+                                    />
+                                </>
+                            )
+                    }
+                </Stack.Navigator>
+            </NavigationContainer>
+        </SafeAreaProvider>
     );
 
 }
