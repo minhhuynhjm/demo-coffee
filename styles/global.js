@@ -28,9 +28,12 @@ export const globalStyles = StyleSheet.create({
     },
     content: {
         height: '90%',
+        // flex: 1,
     },
     flexAuto: {
-        flexGrow: 1, flexShrink: 1, flexBasis: 0
+        flexGrow: 1,
+        flexShrink: 1,
+        flexBasis: 0
     },
     bgColorGray: {
         backgroundColor: '#f0f0f0'

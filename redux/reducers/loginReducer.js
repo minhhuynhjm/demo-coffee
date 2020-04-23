@@ -2,7 +2,8 @@ import { actionTypes } from "../actions/actionTypes";
 import menuData from "../../mock-data/menuData";
 
 const initState = {
-    isSignIn: false
+    isSignIn: false,
+    isLoading: true,
 }
 
 export default function LoginReducer(state = initState, action) {
@@ -11,6 +12,7 @@ export default function LoginReducer(state = initState, action) {
             return {
                 ...state,
                 isSignIn: true,
+                isLoading: false,
                 user: action.payload
             }
 
@@ -18,6 +20,13 @@ export default function LoginReducer(state = initState, action) {
             return {
                 ...state,
                 isSignIn: false,
+                isLoading: true,
+            }
+        case actionTypes.RESTORE_TOKEN:
+            return {
+                ...state,
+                isSignIn: true,
+                isLoading: false,
             }
 
         default:

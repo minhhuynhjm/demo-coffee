@@ -22,15 +22,3 @@ export default function App() {
     </Provider>
   );
 }
-// const App = () => {
-//   const toastRef = useRef();
-
-//   return (
-//     <View style={{ marginTop: 50 }}>
-//       <Button title="Show Toast" onPress={() => toastRef.current.show('hello world!')} />
-//       <Toast ref={toastRef} />
-//     </View>
-//   );
-// };
-
-// export default App;

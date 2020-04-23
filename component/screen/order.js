@@ -48,7 +48,7 @@ function FlatListItem({ item, index }) {
                     </View>
                     <View>
                         <TouchableOpacity onPress={pressSubButton}>
-                            <Text style={styles.flatListItemButtonAdd}> - </Text>
+                            <Text style={[styles.flatListItemButtonAdd, true ? styles.textColor : null]} > - </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -74,7 +74,7 @@ export default function Order({ route, navigation }) {
             <View style={globalStyles.header}>
                 <Header></Header>
             </View>
-            <View style={[globalStyles.content, globalStyles.bgColorGray]}>
+            <View style={[globalStyles.content, globalStyles.bgColorGray, styles.paddingContent]}>
 
                 <View style={styles.alignItemsCenter}>
                     <View style={globalStyles.cardCenter}>
@@ -89,10 +89,12 @@ export default function Order({ route, navigation }) {
                     >
                     </FlatList>
                 </View>
-
+                <View style={{ alignItems: 'flex-start' }}>
+                    <View style={{ width: '95%', height: 1, backgroundColor: 'black' }}></View>
+                </View>
                 <View style={{ alignItems: 'center' }}>
                     {countTotalItem > 0 ? (
-                        <View style={{ width: '90%', alignItems: 'flex-end' }}>
+                        <View style={{ width: '95%', alignItems: 'flex-end' }}>
                             <View style={styles.hrLine}>
                                 <View style={styles.marginItem}>
                                     <Text> {countTotalItem} </Text>
@@ -124,6 +126,9 @@ export default function Order({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+    paddingContent: {
+        paddingLeft: 10
+    },
     alignItemsCenter: {
         alignItems: 'center',
         maxHeight: '70%',
@@ -133,11 +138,11 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     flatList: {
-        width: '95%'
+        width: '100%',
+        // borderBottomColor: 'black',
+        // borderBottomWidth: 1
     },
     hrLine: {
-        borderTopColor: 'black',
-        borderTopWidth: 1,
         alignItems: 'center',
         flexDirection: 'row'
     },
@@ -159,7 +164,9 @@ const styles = StyleSheet.create({
         width: 80,
     },
     flatListItemButtonAdd: {
-        fontSize: 30, textAlign: 'center'
+        fontSize: 30,
+        textAlign: 'center',
+
     },
     orderViewButtonWrap: {
         alignSelf: 'flex-end',
@@ -167,5 +174,8 @@ const styles = StyleSheet.create({
     },
     orderViewButtonText: {
         color: 'white'
+    },
+    textColor: {
+        color: '#f0f0f0'
     }
 });

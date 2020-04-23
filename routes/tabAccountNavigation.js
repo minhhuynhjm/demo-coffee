@@ -7,7 +7,9 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function TabAccountNavigation() {
     return (
-        <Tab.Navigator tabBarOptions={{ labelStyle: { textTransform: 'capitalize' } }}>
+        <Tab.Navigator tabBarOptions={{
+            labelStyle: { textTransform: 'capitalize' },
+        }}>
             <Tab.Screen name="Account Information" component={AccountInfomation} />
             <Tab.Screen name="Management" component={Management} />
         </Tab.Navigator>

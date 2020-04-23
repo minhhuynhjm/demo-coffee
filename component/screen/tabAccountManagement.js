@@ -33,5 +33,4 @@ export default function TabAccountManagement({ navigation }) {
 
 
 const styles = StyleSheet.create({
-
 });

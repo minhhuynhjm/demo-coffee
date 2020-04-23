@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     StyleSheet,
     Text,
@@ -15,18 +15,36 @@ import {
 } from 'react-native';
 
 import { globalStyles } from '../../styles/global'
+import { common } from '../utility/common'
 
 export default function Register() {
-
-    const [signUp, setSignUp] = useState(
-        { CategoryName: '', Decription: '', Parent: 0 }
-    );
-
-    const [username, setUsername] = useState('');
+    const [staffId, setStaffId] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const staffIdRef = useRef(null);
+    const passwordRef = useRef(null);
+    const confirmPasswordRef = useRef(null);
 
     const onClickRegister = () => {
-
+        const trimStaffId = staffId.trim();
+        const trimPassword = password.trim();
+        const trimConfirmPassword = confirmPassword.trim();
+        if (trimStaffId === '') {
+            common.Dialog("Notification", "StaffId is required");
+        }
+        else if (trimPassword === '') {
+            common.Dialog("Notification", "Password is required");
+        }
+        else if (trimConfirmPassword === '') {
+            common.Dialog("Notification", "ConfirmPassword is required");
+        }
+        else if (trimPassword !== trimConfirmPassword) {
+            common.Dialog("Notification", "Password do not match");
+        }
+        else {
+            // sign up
+        }
     }
 
     return (
@@ -34,10 +52,13 @@ export default function Register() {
             <Text style={globalStyles.text}>Staff ID</Text>
             <TextInput
                 style={globalStyles.input}
-                onChangeText={value => setUsername(value)}
-                value={username}
-                placeholder={'Username'}
-                autoCapitalize='none'
+                onChangeText={value => setStaffId(value)}
+                value={staffId}
+                placeholder={'Staff ID'}
+                returnKeyType="next"
+                blurOnSubmit={false}
+                ref={staffIdRef}
+                onSubmitEditing={() => passwordRef.current.focus()}
             />
 
             <Text style={globalStyles.text}>Password</Text>
@@ -48,23 +69,29 @@ export default function Register() {
                 secureTextEntry={true}
                 placeholder={'Password'}
                 autoCapitalize='none'
+                returnKeyType="next"
+                blurOnSubmit={false}
+                ref={passwordRef}
+                onSubmitEditing={() => confirmPasswordRef.current.focus()}
             />
             <Text style={globalStyles.text}>Confirm Password</Text>
             <TextInput
                 style={globalStyles.input}
-                onChangeText={value => setPassword(value)}
-                value={password}
+                onChangeText={value => setConfirmPassword(value)}
+                value={confirmPassword}
+                ref={confirmPasswordRef}
                 secureTextEntry={true}
-                placeholder={'Password'}
+                placeholder={'Confirm Password'}
                 autoCapitalize='none'
+                onSubmitEditing={onClickRegister}
             />
 
             <View style={{ margin: 10, alignItems: 'center' }}>
-                <Button
-                    title="Register"
-                    color="#259269"
-                    onPress={onClickRegister}
-                />
+                <TouchableOpacity onPress={onClickRegister}>
+                    <View style={styles.btnRegister}>
+                        <Text style={styles.btnText}>Register</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         </View>
 
@@ -73,17 +100,16 @@ export default function Register() {
 
 
 const styles = StyleSheet.create({
-    text: {
-        fontSize: 20,
-        marginLeft: 10
-    },
-    input: {
-        width: 200,
-        height: 44,
-        padding: 10,
-        borderWidth: 1,
-        borderColor: 'black',
-        margin: 10,
+    btnRegister: {
+        backgroundColor: "#259269",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 80,
+        height: 40,
         borderRadius: 10
+    },
+    btnText: {
+        color: 'white',
+        fontWeight: 'bold'
     }
 });

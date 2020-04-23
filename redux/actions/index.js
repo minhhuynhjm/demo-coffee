@@ -26,3 +26,10 @@ export const userLogout = () => {
         type: actionTypes.USER_LOGOUT,
     }
 }
+
+export const restoreToken = (item) => {
+    return {
+        type: actionTypes.RESTORE_TOKEN,
+        payload: item
+    }
+}

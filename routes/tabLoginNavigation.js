@@ -14,22 +14,12 @@ import {
 const Tab = createMaterialTopTabNavigator();
 
 export default function TabLoginNavigation() {
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    let timer1 = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timer1)
-    }
-  }, []);
-
   return (
-    !isLoading ? (
-      <Tab.Navigator tabBarOptions={{ labelStyle: { textTransform: 'capitalize' } }}>
-        <Tab.Screen name="Login" component={Login} />
-        <Tab.Screen name="Register" component={Register} />
-      </Tab.Navigator>) : <ActivityIndicator size="small" color="#00ff00" />
+    <Tab.Navigator tabBarOptions={{
+      labelStyle: { textTransform: 'capitalize' }
+    }}>
+      <Tab.Screen name="Login" component={Login} />
+      <Tab.Screen name="Register" component={Register} />
+    </Tab.Navigator>
   );
 }

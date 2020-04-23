@@ -71,6 +71,7 @@ export default function Menu({ navigation }) {
     const dispatch = useDispatch();
     const onClickButtonLogout = () => {
         dispatch(userLogout());
+        // navigation?.goBack();
     }
 
     return (
@@ -84,7 +85,7 @@ export default function Menu({ navigation }) {
                         <Text style={styles.textMenu}>Menu</Text>
                     </View>
                     <FlatList
-                        style={{ height: "85%" }}
+                        style={{ height: "75%" }}
                         data={mergeData}
                         renderItem={({ item, index }) => <FlatListItem item={item} index={index} ></FlatListItem>}
                         keyExtractor={(item) => `key-${item.id}`}

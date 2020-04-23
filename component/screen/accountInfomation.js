@@ -16,8 +16,8 @@ import {
 
 export default function AccountInfomation({ navigation }) {
     return (
-        <View>
-            <Text>Account Information</Text>
+        <View style={{}}>
+            <Text>Account Information 111</Text>
         </View>
 
     );

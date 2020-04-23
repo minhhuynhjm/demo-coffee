@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import {
     StyleSheet,
     Text,
@@ -12,13 +12,20 @@ import {
     Alert,
     ToastAndroid,
     Dimensions,
-    AsyncStorage
+    AsyncStorage,
+    ActivityIndicator
 } from 'react-native';
 import TabLoginNavigation from '../../routes/tabLoginNavigation'
 import Header from './header'
 import { globalStyles } from '../../styles/global'
 
 export default function TabLoginResgister() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        setIsLoading(false);
+    }, []);
+
     return (
         <View style={globalStyles.container}>
             <View style={globalStyles.header}>
@@ -32,7 +39,6 @@ export default function TabLoginResgister() {
                 </View>
             </View>
         </View>
-
     );
 }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
 import { createStackNavigator, TransitionPresets, CardStyleInterpolators } from '@react-navigation/stack'
 import Menu from '../component/screen/menu';
 import TabLoginResgister from '../component/screen/tabLoginResgister';
@@ -27,6 +27,15 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 
+const MyTheme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        background: 'rgb(255,255,255)',
+    },
+};
+
+
 const Stack = createStackNavigator();
 
 function LogoLeft({ navigation }) {
@@ -51,23 +60,11 @@ function LogoTitle({ navigation }) {
     );
 }
 
-const config = {
-    animation: 'spring',
-    config: {
-        stiffness: 1000,
-        damping: 500,
-        mass: 3,
-        overshootClamping: true,
-        restDisplacementThreshold: 0.01,
-        restSpeedThreshold: 0.01,
-    },
-};
-
 export default function Navigator() {
     const loginState = useSelector((state) => (state.loginReducer));
     return (
         <SafeAreaProvider>
-            <NavigationContainer>
+            <NavigationContainer theme={MyTheme}>
                 <Stack.Navigator
                     headerMode="float"
                     screenOptions={{
@@ -84,11 +81,11 @@ export default function Navigator() {
                         !loginState.isSignIn ? (
                             <Stack.Screen name="TabLoginResgister" component={TabLoginResgister}
                                 options={({ navigation, route }) => ({
+                                    animationTypeForReplace: !loginState.isSignIn ? 'pop' : 'push',
                                     headerLeft: () => (
                                         <LogoLeft />
                                     ),
                                     headerTitle: null,
-
                                 })}
                             />
                         ) : (
@@ -111,7 +108,6 @@ export default function Navigator() {
 
                                     <Stack.Screen name="Menu" component={Menu}
                                         options={({ navigation, route }) => ({
-
                                             headerLeft: () => (
                                                 <LogoLeft />
                                             ),
@@ -126,7 +122,6 @@ export default function Navigator() {
 
                                     <Stack.Screen name="TabAccountManagement" component={TabAccountManagement}
                                         options={({ navigation, route }) => ({
-
                                             headerLeft: () => (
                                                 <LogoLeft navigation={navigation} />
                                             ),
@@ -151,6 +146,17 @@ export default function Navigator() {
                                             ),
                                         })}
                                     />
+
+                                    {/* <Stack.Screen name="TabLoginResgister" component={TabLoginResgister}
+                                        options={({ navigation, route }) => ({
+                                            animationTypeForReplace: 'pop',
+                                            headerLeft: () => (
+                                                <LogoLeft />
+                                            ),
+                                            headerTitle: null,
+
+                                        })}
+                                    /> */}
                                 </>
                             )
                     }
