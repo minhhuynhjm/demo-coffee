@@ -4,6 +4,7 @@ import menuData from "../../mock-data/menuData";
 const initState = {
     isSignIn: false,
     isLoading: true,
+    user: null,
 }
 
 export default function LoginReducer(state = initState, action) {
@@ -18,9 +19,9 @@ export default function LoginReducer(state = initState, action) {
 
         case actionTypes.USER_LOGOUT:
             return {
-                ...state,
                 isSignIn: false,
                 isLoading: true,
+                user: null,
             }
         case actionTypes.RESTORE_TOKEN:
             return {

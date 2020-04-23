@@ -18,6 +18,9 @@ import { globalStyles } from '../../styles/global'
 import { common } from '../utility/common'
 
 export default function Register() {
+    useEffect(() => {
+        console.log("Register form");
+    }, []);
     const [staffId, setStaffId] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');

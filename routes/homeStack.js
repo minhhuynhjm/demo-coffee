@@ -24,7 +24,8 @@ import {
     Alert,
     ToastAndroid,
     AsyncStorage,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ActivityIndicator
 } from 'react-native';
 
 const MyTheme = {
@@ -34,6 +35,14 @@ const MyTheme = {
         background: 'rgb(255,255,255)',
     },
 };
+
+function SplashScreen() {
+    return (
+        <View>
+            <ActivityIndicator></ActivityIndicator>
+        </View>
+    );
+}
 
 
 const Stack = createStackNavigator();
@@ -60,52 +69,42 @@ function LogoTitle({ navigation }) {
     );
 }
 
+// loginState.isLoading ? (<Stack.Screen name="Splash" component={SplashScreen} />):
+
 export default function Navigator() {
     const loginState = useSelector((state) => (state.loginReducer));
+    console.log(loginState);
     return (
         <SafeAreaProvider>
             <NavigationContainer theme={MyTheme}>
+
                 <Stack.Navigator
                     headerMode="float"
                     screenOptions={{
                         gestureEnabled: true,
-                        gestureDirection: "horizontal",
+                        // gestureDirection: "horizontal",
                         headerBackTitleVisible: false,
-                        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                        // cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                         headerStyle: {
                             backgroundColor: '#D5A169',
                         },
                         headerTitleAlign: 'center',
                     }}>
+
                     {
-                        !loginState.isSignIn ? (
-                            <Stack.Screen name="TabLoginResgister" component={TabLoginResgister}
-                                options={({ navigation, route }) => ({
-                                    animationTypeForReplace: !loginState.isSignIn ? 'pop' : 'push',
-                                    headerLeft: () => (
-                                        <LogoLeft />
-                                    ),
-                                    headerTitle: null,
-                                })}
-                            />
-                        ) : (
-                                <>
-                                    {/* <Stack.Screen name="TestFlex" component={TestFlex}
+                        loginState.user == null ?
+                            (
+                                <Stack.Screen name="TabLoginResgister" component={TabLoginResgister}
                                     options={({ navigation, route }) => ({
-
+                                        animationTypeForReplace: !loginState.isSignIn ? 'pop' : 'push',
                                         headerLeft: () => (
-                                            <LogoLeft navigation={navigation} />
+                                            <LogoLeft />
                                         ),
-                                        headerTitle: () => (
-                                            <LogoTitle navigation={navigation} />
-                                        ),
-
-                                        headerRight: () => (
-                                            <ShopCartIcon />
-                                        ),
+                                        headerTitle: null,
                                     })}
-                                /> */}
-
+                                />
+                            ) : (
+                                <>
                                     <Stack.Screen name="Menu" component={Menu}
                                         options={({ navigation, route }) => ({
                                             headerLeft: () => (
@@ -146,17 +145,6 @@ export default function Navigator() {
                                             ),
                                         })}
                                     />
-
-                                    {/* <Stack.Screen name="TabLoginResgister" component={TabLoginResgister}
-                                        options={({ navigation, route }) => ({
-                                            animationTypeForReplace: 'pop',
-                                            headerLeft: () => (
-                                                <LogoLeft />
-                                            ),
-                                            headerTitle: null,
-
-                                        })}
-                                    /> */}
                                 </>
                             )
                     }

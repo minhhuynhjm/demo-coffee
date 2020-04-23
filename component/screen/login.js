@@ -22,6 +22,10 @@ import { userLogin, userLogout } from '../../redux/actions'
 import { common } from '../utility/common'
 
 export default function Login({ navigation }) {
+    useEffect(() => {
+        console.log("Login form");
+    }, []);
+
     const toastRef = useRef();
     const [staffId, setStaffId] = useState('');
     const [password, setPassword] = useState('');

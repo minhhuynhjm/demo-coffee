@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, useFocusEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -23,7 +23,7 @@ export default function TabLoginResgister() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setIsLoading(false);
+        console.log("Tab Login res");
     }, []);
 
     return (

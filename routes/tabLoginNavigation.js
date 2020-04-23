@@ -17,7 +17,8 @@ export default function TabLoginNavigation() {
   return (
     <Tab.Navigator tabBarOptions={{
       labelStyle: { textTransform: 'capitalize' }
-    }}>
+
+    }} lazy={true}>
       <Tab.Screen name="Login" component={Login} />
       <Tab.Screen name="Register" component={Register} />
     </Tab.Navigator>
