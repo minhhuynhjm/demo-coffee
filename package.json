@@ -9,17 +9,12 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.6",
-    "@react-navigation/bottom-tabs": "^5.2.6",
-    "@react-navigation/material-top-tabs": "^5.1.8",
-    "@react-navigation/native": "^5.1.5",
-    "@react-navigation/stack": "^5.2.10",
-    "axios": "^0.19.2",
+    "@react-navigation/material-top-tabs": "^5.1.9",
+    "@react-navigation/native": "^5.1.6",
+    "@react-navigation/stack": "^5.2.13",
     "expo": "~37.0.3",
-    "expo-screen-orientation": "~1.0.0",
-    "expo-secure-store": "~8.1.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
-    "react-hook-form": "^5.5.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
     "react-native-easy-toast": "^1.2.0",
     "react-native-gesture-handler": "~1.6.0",
@@ -30,12 +25,11 @@
     "react-native-web": "~0.11.7",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "redux-persist": "^6.0.0",
-    "redux-persist-expo-securestore": "^2.0.0"
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.6",
-    "babel-preset-expo": "~8.1.0"
+    "babel-preset-expo": "~8.1.0",
+    "@babel/core": "^7.8.6"
   },
   "private": true
 }

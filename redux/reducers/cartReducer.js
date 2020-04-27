@@ -1,5 +1,4 @@
 import { actionTypes } from "../actions/actionTypes";
-import menuData from "../../mock-data/menuData";
 
 const initState = {
     addedItems: [],
@@ -57,6 +56,13 @@ export default function CartReducer(state = initState, action) {
                 }
             }
 
+        case actionTypes.CLEAR_PRODUCT_FROM_CART:
+            return {
+                ...state,
+                addedItems: [],
+                countTotalItem: 0,
+                totalPrice: 0
+            }
         default:
             return state;
     }
@@ -70,23 +76,3 @@ const findItemInCart = (cart, itemId) => {
     return cart.find(x => x.id === itemId);
 }
 
-
-// if (index !== -1) {
-//     // Exist in cart
-//     state[index].count++;
-//     return state; // =
-// } else {
-//     tempItem = { ...action.payload, count: 1};
-//     return [...state, tempItem]
-// }
-
-// return {
-//     ...state,
-//     addedItems: [...state.addedItems, action.payload],
-//     countTotalItem: ++state.countTotalItem
-// }
-
-            // return {
-//     ...state,
-//     countTotalItem: --state.countTotalItem
-// }

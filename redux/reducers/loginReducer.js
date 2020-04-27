@@ -1,5 +1,4 @@
 import { actionTypes } from "../actions/actionTypes";
-import menuData from "../../mock-data/menuData";
 
 const initState = {
     isSignIn: false,
@@ -8,6 +7,7 @@ const initState = {
 }
 
 export default function LoginReducer(state = initState, action) {
+    // console.log(action);
     switch (action.type) {
         case actionTypes.USER_LOGIN:
             return {

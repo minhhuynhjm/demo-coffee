@@ -33,7 +33,7 @@ export const globalStyles = StyleSheet.create({
     flexAuto: {
         flexGrow: 1,
         flexShrink: 1,
-        flexBasis: 0
+        flexBasis: 0,
     },
     bgColorGray: {
         backgroundColor: '#f0f0f0'

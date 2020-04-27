@@ -14,6 +14,12 @@ export const removeProductToCart = (item) => {
     }
 }
 
+export const clearProductFromCart = () => {
+    return {
+        type: actionTypes.CLEAR_PRODUCT_FROM_CART,
+    }
+}
+
 export const userLogin = (item) => {
     return {
         type: actionTypes.USER_LOGIN,
