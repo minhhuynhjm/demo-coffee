@@ -11,6 +11,9 @@ export const styles = StyleSheet.create({
     },
     btnText: {
         color: 'white',
-        fontWeight: 'bold'
+        fontFamily: 'Franklin'
+    },
+    wrapperButtonLogin: {
+        alignItems: 'center'
     }
 });

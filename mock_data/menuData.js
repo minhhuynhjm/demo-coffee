@@ -1,65 +1,33 @@
 const menuData = [{
     "id": 1,
-    "price": 99,
-    "name": "Black",
+    "price": 100,
+    "name": "Espresso",
 }, {
     "id": 2,
-    "price": 88,
-    "name": "TN",
+    "price": 100,
+    "name": "Americano",
 }, {
     "id": 3,
-    "price": 77,
-    "name": "Expresso",
-}, {
-    "id": 4,
-    "price": 66,
+    "price": 100,
     "name": "Capuchino",
 }, {
+    "id": 4,
+    "price": 100,
+    "name": "Café Latte",
+}, {
     "id": 5,
-    "price": 55,
-    "name": "Late",
+    "price": 100,
+    "name": "Chocolate",
 }, {
     "id": 6,
-    "price": 44,
-    "name": "Americano",
-
+    "price": 100,
+    "name": "Cafémocha",
+},
+{
+    "id": 7,
+    "price": 100,
+    "name": "Hot Water",
 }
-    //     , {
-    //     "id": 7,
-    //     "price": 44,
-    //     "name": "Americano1",
-
-    // }, {
-    //     "id": 8,
-    //     "price": 44,
-    //     "name": "Americano2",
-
-    // }, {
-    //     "id": 9,
-    //     "price": 44,
-    //     "name": "Americano3",
-
-    // }, {
-    //     "id": 10,
-    //     "price": 44,
-    //     "name": "Americano",
-
-    // }, {
-    //     "id": 11,
-    //     "price": 44,
-    //     "name": "Americano5",
-
-    // }, {
-    //     "id": 12,
-    //     "price": 44,
-    //     "name": "Americano6",
-
-    // }, {
-    //     "id": 14,
-    //     "price": 44,
-    //     "name": "Americano7",
-
-    // }
 ]
 
 export default menuData;

@@ -5,7 +5,10 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
     },
     hrLine: {
-        fontWeight: 'bold', fontSize: 26, borderBottomColor: 'black', borderBottomWidth: 0.5
+        fontSize: 26,
+        borderBottomColor: 'black',
+        borderBottomWidth: 0.5,
+        fontFamily: 'Franklin'
     }
 });
 

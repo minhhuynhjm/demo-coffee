@@ -1,20 +1,18 @@
 import { StyleSheet } from 'react-native';
 
 export const globalStyles = StyleSheet.create({
-    text: {
-        fontSize: 14,
-        marginLeft: 10,
-        fontWeight: "bold"
+    marginText: {
+        marginBottom: 5
     },
     input: {
-        width: 240,
-        height: 35,
-        padding: 10,
+        width: '100%',
+        height: 30,
         borderWidth: 1,
         borderColor: '#a5a5a5',
-        margin: 10,
-        borderRadius: 10,
+        borderRadius: 3,
         fontSize: 14,
+        marginBottom: 20,
+        paddingHorizontal: 5
     },
     container: {
         backgroundColor: 'white',
@@ -50,7 +48,11 @@ export const globalStyles = StyleSheet.create({
     viewWrapperForm: {
         paddingTop: 15,
         backgroundColor: 'white',
-        flex: 1
+        alignItems: 'center',
+    },
+    viewWrapperText: {
+        width: '100%',
+        paddingHorizontal: 50
     },
     cardCenter: {
         backgroundColor: '#83bbb9',
@@ -59,5 +61,51 @@ export const globalStyles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
         marginBottom: 10
+    },
+    wrapperButtonLogin: {
+        alignItems: 'center'
+    },
+    buttonFranklin: {
+        backgroundColor: "#21BF73",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 100,
+        height: 45,
+        borderRadius: 10
+    },
+    btnLoginText: {
+        color: 'white',
+        fontFamily: 'Franklin'
+    },
+    textFranklinWhite: {
+        color: 'white',
+        fontFamily: 'Franklin',
+        fontSize: 18,
+    },
+    textFranklinWhiteBold: {
+        fontWeight: "bold",
+        color: 'white',
+        fontFamily: 'Franklin',
+        fontSize: 18,
+    },
+    textSegoeUI: {
+        fontFamily: 'SegoeUI',
+        fontSize: 18,
+    },
+    textBoldSegoeUI: {
+        fontWeight: "bold",
+        fontFamily: 'SegoeUI',
+        fontSize: 18,
+    },
+    textWhiteSegoeUI: {
+        color: 'white',
+        fontFamily: 'SegoeUI',
+        fontSize: 18,
+    },
+    textWhiteBoldSegeoUI: {
+        color: 'white',
+        fontWeight: "bold",
+        fontFamily: 'SegoeUI',
+        fontSize: 18,
     }
 });

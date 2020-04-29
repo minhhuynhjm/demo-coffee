@@ -1,32 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-    Button,
-    FlatList,
-    TouchableOpacity,
-    TextInput,
-    TouchableHighlight,
-    Image,
-    Alert,
-    ToastAndroid,
-    AsyncStorage
-} from 'react-native';
-
+import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { globalStyles } from '../../styles/global';
 import userData from '../../mock_data/userData';
-import { useSelector, useDispatch } from "react-redux";
-import { userLogin, userLogout } from '../../redux/actions'
+import { useDispatch } from "react-redux";
+import { userLogin } from '../../redux/actions'
 import { Common } from '../../utilities/Common'
 import { styles } from './styles'
 
-export default function Login({ navigation }) {
+export default function Login() {
     useEffect(() => {
         console.log("Login form");
     }, []);
 
-    const toastRef = useRef();
     const [staffId, setStaffId] = useState('');
     const [password, setPassword] = useState('');
     const staffIdRef = useRef(null);
@@ -67,37 +52,35 @@ export default function Login({ navigation }) {
 
     return (
         <View style={globalStyles.viewWrapperForm}>
-            <Text style={globalStyles.text}>Staff ID</Text>
-            <TextInput
-                style={globalStyles.input}
-                onChangeText={value => setStaffId(value)}
-                value={staffId}
-                placeholder={'Staff ID'}
-                autoCapitalize='none'
-                ref={staffIdRef}
-                onSubmitEditing={() => passwordRef.current.focus()}
-                returnKeyType="next"
-                blurOnSubmit={false}
-            />
-
-            <Text style={globalStyles.text}>Password</Text>
-            <TextInput
-                style={globalStyles.input}
-                onChangeText={value => setPassword(value)}
-                value={password}
-                secureTextEntry={true}
-                placeholder={'Password'}
-                ref={passwordRef}
-                autoCapitalize='none'
-                onSubmitEditing={onClickButtonLogin}
-            />
-
-            <View style={{ margin: 10, alignItems: 'center' }}>
-                <TouchableOpacity onPress={onClickButtonLogin}>
-                    <View style={styles.btnLogin}>
-                        <Text style={styles.btnText}>Login</Text>
-                    </View>
-                </TouchableOpacity>
+            <View style={globalStyles.viewWrapperText}>
+                <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Staff ID</Text>
+                <TextInput
+                    style={globalStyles.input}
+                    onChangeText={value => setStaffId(value)}
+                    value={staffId}
+                    autoCapitalize='none'
+                    ref={staffIdRef}
+                    onSubmitEditing={() => passwordRef.current.focus()}
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                />
+                <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Password</Text>
+                <TextInput
+                    style={globalStyles.input}
+                    onChangeText={value => setPassword(value)}
+                    value={password}
+                    secureTextEntry={true}
+                    ref={passwordRef}
+                    autoCapitalize='none'
+                    onSubmitEditing={onClickButtonLogin}
+                />
+                <View style={styles.wrapperButtonLogin}>
+                    <TouchableOpacity onPress={onClickButtonLogin}>
+                        <View style={globalStyles.buttonFranklin}>
+                            <Text style={globalStyles.textFranklinWhiteBold}>Login</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
     );

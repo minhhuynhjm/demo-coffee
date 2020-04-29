@@ -1,14 +1,14 @@
 import React from 'react'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
-import { createStackNavigator, TransitionPresets, CardStyleInterpolators } from '@react-navigation/stack'
+import { createStackNavigator } from '@react-navigation/stack'
 import Menu from '../components/menu/index';
 import TabLoginResgister from '../components/tabLoginComponent/index';
 import TabAccountManagement from '../components/tabManagementComponent/index';
 import Order from '../components/order/index';
-import { useSelector, useDispatch } from "react-redux";
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { useSelector } from "react-redux";
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { LogoLeft, LogoTitle, LogoRight } from './header'
+import { LogoLeft, LogoTitle, LogoRight, TextTitle } from './header'
 
 const WhiteTheme = {
     ...DefaultTheme,
@@ -28,23 +28,23 @@ export default function Navigator() {
                 <Stack.Navigator
                     screenOptions={{
                         gestureEnabled: true, headerBackTitleVisible: false,
-                        headerStyle: { backgroundColor: '#D5A169', },
+                        headerStyle: { backgroundColor: '#DF8931' },
                         headerTitleAlign: 'center',
                     }}>
                     {
                         loginState.user == null ?
                             (
                                 <Stack.Screen name="TabLoginResgister" component={TabLoginResgister}
-                                    options={({ navigation, route }) => ({
+                                    options={() => ({
                                         animationTypeForReplace: !loginState.isSignIn ? 'pop' : 'push',
                                         headerLeft: () => (<LogoLeft />),
-                                        headerTitle: null,
+                                        headerTitle: () => (<TextTitle />),
                                     })}
                                 />
                             ) : (
                                 <>
                                     <Stack.Screen name="Menu" component={Menu}
-                                        options={({ navigation, route }) => ({
+                                        options={({ navigation }) => ({
                                             headerLeft: () => (<LogoLeft />),
                                             headerTitle: () => (<LogoTitle navigation={navigation} />),
                                             headerRight: () => (<LogoRight navigation={navigation} />),
@@ -52,14 +52,14 @@ export default function Navigator() {
                                     />
 
                                     <Stack.Screen name="TabAccountManagement" component={TabAccountManagement}
-                                        options={({ navigation, route }) => ({
+                                        options={({ navigation }) => ({
                                             headerLeft: () => (<LogoLeft navigation={navigation} />),
                                             headerTitle: () => (<LogoTitle navigation={navigation} />),
                                         })}
                                     />
 
                                     <Stack.Screen name="Order" component={Order}
-                                        options={({ navigation, route }) => ({
+                                        options={({ navigation }) => ({
                                             headerLeft: () => (<LogoLeft navigation={navigation} />),
                                             headerTitle: () => (<LogoTitle navigation={navigation} />),
                                         })}

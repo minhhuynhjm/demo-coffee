@@ -1,8 +1,8 @@
 import React, { } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput, Keyboard } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity, TextInput, Keyboard, SafeAreaView } from 'react-native';
 import menuData from '../../mock_data/menuData';
 import { useSelector, useDispatch } from "react-redux";
-import { addProductToCart, removeProductToCart, userLogout } from '../../redux/actions'
+import { addProductToCart, removeProductToCart } from '../../redux/actions'
 import Header from '../header/index'
 import { globalStyles } from '../../styles/global'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -20,27 +20,25 @@ function FlatListItem({ item }) {
         dispatch(removeProductToCart(item));
     }
     return (
-        <View style={styles.flatListItemWrapper}>
+        <View style={styles.flatListItemContentWrapper}>
             <View style={[styles.flatListMarginItem, styles.flatListItemViewProduct]}>
-                <Text style={styles.flatListItemTextProduct}> {item.name}</Text>
+                <Text style={globalStyles.textSegoeUI}> {item.name}</Text>
             </View>
 
             <View style={styles.flatListMarginItem}>
-                <Text style={{}}> {item.price}P</Text>
+                <Text style={[styles.pointTextColor, globalStyles.textSegoeUI]}> {item.price}P</Text>
             </View>
-
             <View style={[styles.flatListMarginItem, styles.flatListItemWrapper]} >
                 <TouchableOpacity onPress={pressSubButton} disabled={item.quantity === 0} >
-                    <Text style={styles.flatListItemButtonAdd}> - </Text>
+                    <Text style={styles.flatListItemButtonAdd}> -  </Text>
                 </TouchableOpacity>
-
                 <TextInput style={styles.flatListItemTextInput}
                     editable={false}
                     keyboardType='numeric'
                     value={`${item.quantity}`} >
                 </TextInput>
                 <TouchableOpacity onPress={pressAddButton}>
-                    <Text style={styles.flatListItemButtonAdd}> + </Text>
+                    <Text style={styles.flatListItemButtonAdd}>  + </Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -49,8 +47,8 @@ function FlatListItem({ item }) {
 
 export default function Menu() {
     const props = useSelector((state) => (state.cartReducer));
-    const listItem = props.addedItems;
-    const mergeData = merge(menuData, listItem);
+    const listItemState = props.addedItems;
+    const mergeData = mergeState(menuData, listItemState);
     const DismissKeyboard = ({ children }) => (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             {children}
@@ -58,7 +56,7 @@ export default function Menu() {
     );
     return (
 
-        <View style={globalStyles.container}>
+        <SafeAreaView style={globalStyles.container}>
             <DismissKeyboard>
                 <View style={globalStyles.header}>
                     <Header></Header>
@@ -66,10 +64,10 @@ export default function Menu() {
                 <View style={[globalStyles.content, globalStyles.bgColorGray]}>
                     <View style={styles.wrapperContent}>
                         <View style={globalStyles.cardCenter}>
-                            <Text style={styles.textMenu}>Menu</Text>
+                            <Text style={globalStyles.textWhiteBoldSegeoUI}>Menu</Text>
                         </View>
                         <FlatList
-                            style={{ height: "85%" }}
+                            style={styles.flatListWrapper}
                             data={mergeData}
                             renderItem={({ item, index }) => <FlatListItem item={item} index={index} ></FlatListItem>}
                             keyExtractor={(item) => `key-${item.id}`}
@@ -78,12 +76,12 @@ export default function Menu() {
                     </View>
                 </View>
             </DismissKeyboard>
-        </View>
+        </SafeAreaView>
     );
 }
 
 // Merge state 
-const merge = (array1 = [], array2 = []) => {
+const mergeState = (array1 = [], array2 = []) => {
     return array1.map(a1 => {
         const index = array2.findIndex(a2 => a2.id === a1.id);
         a1.quantity = index !== -1 ? array2[index].quantity : 0;

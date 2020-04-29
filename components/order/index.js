@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
 import Toast from 'react-native-easy-toast';
 import { removeProductToCart, clearProductFromCart } from '../../redux/actions'
 import { useSelector, useDispatch } from "react-redux";
@@ -13,19 +13,19 @@ function FlatListItem({ item, showAdd }) {
         dispatch(removeProductToCart(item));
     }
     return (
-        <View style={{ flexDirection: 'row', }}>
-            <View style={{ width: '60%', alignItems: 'flex-start', justifyContent: 'center' }}>
-                <View style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
-                    <Text style={styles.flatListItemProductText}> {item.name}</Text>
+        <View style={styles.viewWrapperOrder}>
+            <View style={styles.viewProductName}>
+                <View style={styles.viewWrapperProductName}>
+                    <Text style={globalStyles.textSegoeUI}> {item.name}</Text>
                 </View>
             </View>
-            <View style={{ width: '40%', flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ width: '40%', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
-                    <Text> {item.quantity} </Text>
+            <View style={styles.viewWrapperItemAndPrice}>
+                <View style={styles.viewQuantity}>
+                    <Text style={globalStyles.textSegoeUI}> {item.quantity} </Text>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }} >
+                <View style={styles.wrapperTotalPrice} >
                     <View>
-                        <Text> {item.quantity * item.price} </Text>
+                        <Text style={globalStyles.textSegoeUI}> {item.quantity * item.price} </Text>
                     </View>
                     <View>
                         <TouchableOpacity onPress={pressSubButton}>
@@ -35,7 +35,6 @@ function FlatListItem({ item, showAdd }) {
                 </View>
             </View>
         </View>
-
     );
 }
 
@@ -51,7 +50,7 @@ export default function Order({ navigation }) {
 
     const clickOrderSuccessful = () => {
         setShowAdd(true);
-        toastRef.current.show(<View><Text style={{ fontWeight: 'bold', color: 'white', fontSize: 18 }}>order successfully !!</Text></View>)
+        toastRef.current.show(<View><Text style={styles.textToast}>order successfully !!</Text></View>)
         setTimeout(() => {
             dispatch(clearProductFromCart());
             navigation?.navigate('Menu')
@@ -75,14 +74,14 @@ export default function Order({ navigation }) {
     }
 
     return (
-        <View style={globalStyles.container}>
+        <SafeAreaView style={globalStyles.container}>
             <View style={globalStyles.header}>
                 <Header></Header>
             </View>
             <View style={[globalStyles.content, globalStyles.bgColorGray, styles.paddingContent]}>
                 <View style={styles.alignItemsCenter}>
                     <View style={globalStyles.cardCenter}>
-                        <Text style={styles.orderConfirmText}>Order Confirm</Text>
+                        <Text style={globalStyles.textWhiteBoldSegeoUI}>Order Confirm</Text>
                     </View>
                     <FlatList
                         style={styles.flatList}
@@ -96,19 +95,19 @@ export default function Order({ navigation }) {
                 {countTotalItem !== 0 ?
                     (
                         <View>
-                            <View style={{ alignItems: 'flex-start' }}>
-                                <View style={{ width: '95%', height: 0.5, backgroundColor: 'black' }}></View>
+                            <View style={styles.viewWrapperHr}>
+                                <View style={styles.hrLine}></View>
                             </View>
-                            <View style={{ flexDirection: 'row', }}>
-                                <View style={{ width: '60%', alignItems: 'flex-start', justifyContent: 'center' }}>
+                            <View style={styles.viewWrapperOrder}>
+                                <View style={styles.viewProductName}>
                                 </View>
-                                <View style={{ width: '40%', flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <View style={{ width: '40%', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
-                                        <Text> {countTotalItem} </Text>
+                                <View style={styles.viewWrapperItemAndPrice}>
+                                    <View style={styles.viewQuantity}>
+                                        <Text style={globalStyles.textSegoeUI}> {countTotalItem} </Text>
                                     </View>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }} >
+                                    <View style={styles.wrapperTotalPrice} >
                                         <View>
-                                            <Text> {totalPrice} </Text>
+                                            <Text style={globalStyles.textSegoeUI}> {totalPrice} </Text>
                                         </View>
                                         <View>
                                             <Text style={[styles.flatListItemButtonAdd, styles.textColor]} > &#32; </Text>
@@ -118,7 +117,7 @@ export default function Order({ navigation }) {
                             </View>
                         </View>
                     ) :
-                    <View style={{ alignItems: 'center' }}>
+                    <View style={[styles.viewNoItem, globalStyles.textSegoeUI]}>
                         <Text>You have no items in your shopping cart.</Text>
                     </View>
                 }
@@ -126,14 +125,14 @@ export default function Order({ navigation }) {
                 </View>
                 <View style={styles.orderViewButtonWrap}>
                     <TouchableOpacity onPress={onClickButtonOrder} disabled={showAdd}>
-                        <View style={styles.orderViewButton}>
-                            <Text style={styles.orderViewButtonText}>{countTotalItem !== 0 ? "Order" : "Menu"} </Text>
+                        <View style={globalStyles.buttonFranklin}>
+                            <Text style={globalStyles.textFranklinWhiteBold}>{countTotalItem !== 0 ? "Order" : "Menu"} </Text>
                         </View>
                     </TouchableOpacity>
                 </View>
-                <Toast ref={toastRef} style={{ backgroundColor: '#28B243' }} position='center' positionValue={200} fadeInDuration={1000} fadeOutDuration={1250} />
+                <Toast ref={toastRef} style={styles.toastBg} position='center' positionValue={200} fadeInDuration={1000} fadeOutDuration={1250} />
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 

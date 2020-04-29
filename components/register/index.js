@@ -1,19 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-    Button,
-    FlatList,
-    TouchableOpacity,
-    TextInput,
-    TouchableHighlight,
-    Image,
-    Alert,
-    ToastAndroid,
-    AsyncStorage
-} from 'react-native';
-
+import { Text, View, TouchableOpacity, TextInput, ScrollView, Picker } from 'react-native';
 import { globalStyles } from '../../styles/global'
 import { Common } from '../../utilities/Common'
 import { styles } from './styles'
@@ -25,6 +11,7 @@ export default function Register() {
     const [staffId, setStaffId] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [selectedValue, setSelectedValue] = useState("java");
 
     const staffIdRef = useRef(null);
     const passwordRef = useRef(null);
@@ -53,50 +40,80 @@ export default function Register() {
 
     return (
         <View style={globalStyles.viewWrapperForm}>
-            <Text style={globalStyles.text}>Staff ID</Text>
-            <TextInput
-                style={globalStyles.input}
-                onChangeText={value => setStaffId(value)}
-                value={staffId}
-                placeholder={'Staff ID'}
-                returnKeyType="next"
-                blurOnSubmit={false}
-                ref={staffIdRef}
-                onSubmitEditing={() => passwordRef.current.focus()}
-            />
+            <ScrollView style={globalStyles.viewWrapperText}>
+                <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Full Name</Text>
+                <TextInput
+                    style={globalStyles.input}
+                    onChangeText={value => setStaffId(value)}
+                    value={staffId}
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                    ref={staffIdRef}
+                    onSubmitEditing={() => passwordRef.current.focus()}
+                />
 
-            <Text style={globalStyles.text}>Password</Text>
-            <TextInput
-                style={globalStyles.input}
-                onChangeText={value => setPassword(value)}
-                value={password}
-                secureTextEntry={true}
-                placeholder={'Password'}
-                autoCapitalize='none'
-                returnKeyType="next"
-                blurOnSubmit={false}
-                ref={passwordRef}
-                onSubmitEditing={() => confirmPasswordRef.current.focus()}
-            />
-            <Text style={globalStyles.text}>Confirm Password</Text>
-            <TextInput
-                style={globalStyles.input}
-                onChangeText={value => setConfirmPassword(value)}
-                value={confirmPassword}
-                ref={confirmPasswordRef}
-                secureTextEntry={true}
-                placeholder={'Confirm Password'}
-                autoCapitalize='none'
-                onSubmitEditing={onClickRegister}
-            />
+                <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Staff ID</Text>
+                <TextInput
+                    style={globalStyles.input}
+                    onChangeText={value => setStaffId(value)}
+                    value={staffId}
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                    ref={staffIdRef}
+                    onSubmitEditing={() => passwordRef.current.focus()}
+                />
 
-            <View style={{ margin: 10, alignItems: 'center' }}>
-                <TouchableOpacity onPress={onClickRegister}>
-                    <View style={styles.btnRegister}>
-                        <Text style={styles.btnText}>Register</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
+                <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Age</Text>
+                <TextInput
+                    style={globalStyles.input}
+                    onChangeText={value => setStaffId(value)}
+                    value={staffId}
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                    ref={staffIdRef}
+                    onSubmitEditing={() => passwordRef.current.focus()}
+                />
+                <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Sex</Text>
+                <View style={{ borderWidth: 1, borderColor: '#a5a5a5', marginBottom: 20, borderRadius: 3, }}>
+                    <Picker
+                        selectedValue={selectedValue}
+                        style={{ width: '100%', height: 30 }}
+                        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                    >
+                        <Picker.Item label="Male" value="java" />
+                        <Picker.Item label="Female" value="js" />
+                    </Picker>
+                </View>
+                <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Password</Text>
+                <TextInput
+                    style={globalStyles.input}
+                    onChangeText={value => setPassword(value)}
+                    value={password}
+                    secureTextEntry={true}
+                    autoCapitalize='none'
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                    ref={passwordRef}
+                    onSubmitEditing={() => confirmPasswordRef.current.focus()}
+                />
+                <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Confirm Password</Text>
+                <TextInput
+                    style={globalStyles.input}
+                    onChangeText={value => setConfirmPassword(value)}
+                    value={confirmPassword}
+                    ref={confirmPasswordRef}
+                    secureTextEntry={true}
+                    autoCapitalize='none'
+                    onSubmitEditing={onClickRegister}
+                />
+                <View style={globalStyles.wrapperButtonLogin}>
+                    <TouchableOpacity onPress={onClickRegister}>
+                        <View style={globalStyles.buttonFranklin}>
+                            <Text style={globalStyles.textFranklinWhiteBold}>Register</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
         </View>
 
     );
