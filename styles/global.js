@@ -46,7 +46,7 @@ export const globalStyles = StyleSheet.create({
         alignItems: 'center'
     },
     viewWrapperForm: {
-        paddingTop: 15,
+        paddingVertical: 15,
         backgroundColor: 'white',
         alignItems: 'center',
     },
@@ -80,32 +80,32 @@ export const globalStyles = StyleSheet.create({
     textFranklinWhite: {
         color: 'white',
         fontFamily: 'Franklin',
-        fontSize: 18,
+        fontSize: 16,
     },
     textFranklinWhiteBold: {
         fontWeight: "bold",
         color: 'white',
         fontFamily: 'Franklin',
-        fontSize: 18,
+        fontSize: 16,
     },
     textSegoeUI: {
         fontFamily: 'SegoeUI',
-        fontSize: 18,
+        fontSize: 16,
     },
     textBoldSegoeUI: {
         fontWeight: "bold",
         fontFamily: 'SegoeUI',
-        fontSize: 18,
+        fontSize: 16,
     },
     textWhiteSegoeUI: {
         color: 'white',
         fontFamily: 'SegoeUI',
-        fontSize: 18,
+        fontSize: 16,
     },
     textWhiteBoldSegeoUI: {
         color: 'white',
         fontWeight: "bold",
         fontFamily: 'SegoeUI',
-        fontSize: 18,
+        fontSize: 16,
     }
 });

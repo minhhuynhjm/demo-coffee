@@ -2,7 +2,7 @@ import React, { } from 'react';
 import { Text, View, FlatList, TouchableOpacity, TextInput, Keyboard, SafeAreaView } from 'react-native';
 import menuData from '../../mock_data/menuData';
 import { useSelector, useDispatch } from "react-redux";
-import { addProductToCart, removeProductToCart } from '../../redux/actions'
+import { addProductToCart, removeProductToCart, addMuptipleItemToCart } from '../../redux/actions'
 import Header from '../header/index'
 import { globalStyles } from '../../styles/global'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -19,6 +19,13 @@ function FlatListItem({ item }) {
     const pressSubButton = () => {
         dispatch(removeProductToCart(item));
     }
+
+    const addMultipleItem = (count) => {
+        let num = parseInt(count) || 0;
+        console.log('item:', item, 'count:', num);
+        dispatch(addMuptipleItemToCart(item, num))
+    }
+
     return (
         <View style={styles.flatListItemContentWrapper}>
             <View style={[styles.flatListMarginItem, styles.flatListItemViewProduct]}>
@@ -33,7 +40,8 @@ function FlatListItem({ item }) {
                     <Text style={styles.flatListItemButtonAdd}> -  </Text>
                 </TouchableOpacity>
                 <TextInput style={styles.flatListItemTextInput}
-                    editable={false}
+                    // editable={false}
+                    onChangeText={value => addMultipleItem(value)}
                     keyboardType='numeric'
                     value={`${item.quantity}`} >
                 </TextInput>

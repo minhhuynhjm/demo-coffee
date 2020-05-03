@@ -7,6 +7,7 @@ const initState = {
 }
 
 export default function CartReducer(state = initState, action) {
+    console.log(action);
     switch (action.type) {
         case actionTypes.ADD_PRODUCT_TO_CART:
             let tempItem = {}
@@ -33,6 +34,58 @@ export default function CartReducer(state = initState, action) {
                 }
             }
 
+        case actionTypes.ADD_MUPTIPLE_ITEM_TO_CARD:
+            // count = 0
+            if (action.count === 0) {
+
+                const cartItem1 = findItemInCart(state.addedItems, action.payload.id);
+                if (cartItem1 != null) {
+                    console.log("Hello Value");
+                    let new_items = state.addedItems.filter(item => item.id !== action.payload.id)
+                    let newTotalPrice = state.totalPrice - (cartItem1.price * cartItem1.quantity);
+                    let totalItem = state.countTotalItem - cartItem1.quantity;
+                    return {
+                        ...state,
+                        addedItems: new_items,
+                        countTotalItem: totalItem,
+                        totalPrice: newTotalPrice
+                    }
+                }
+                else {
+                    return {
+                        ...state
+                    }
+                }
+            }
+            else {
+                let tempItem = {}
+                const index = findExistItemInCart(state.addedItems, action.payload.id);
+
+                if (index !== -1) {
+                    // Exist in cart
+                    state.addedItems[index].quantity = action.count;
+                    let totalItem = state.countTotalItem + action.count;
+                    let newTotalPrice = state.totalPrice + (action.payload.price * action.count);
+                    return {
+                        ...state,
+                        countTotalItem: totalItem,
+                        totalPrice: newTotalPrice
+                    }
+                }
+                else {
+                    tempItem = { ...action.payload, quantity: action.count };
+
+                    let totalItem = state.countTotalItem + action.count;
+                    let newTotalPrice = state.totalPrice + (action.payload.price * action.count);
+
+                    return {
+                        ...state,
+                        addedItems: [...state.addedItems, tempItem],
+                        countTotalItem: totalItem,
+                        totalPrice: newTotalPrice
+                    }
+                }
+            }
 
         case actionTypes.REMOVE_PRODUCT_FROM_CART:
             const cartItem = findItemInCart(state.addedItems, action.payload.id);

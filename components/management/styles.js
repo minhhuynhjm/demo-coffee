@@ -17,13 +17,13 @@ export const styles = StyleSheet.create({
         borderRadius: 5
     },
     headerDestination: {
-        width: '40%', justifyContent: 'center'
+        width: '50%', justifyContent: 'center'
     },
     headerPoint: {
         width: '40%', justifyContent: 'center'
     },
     headerEditIcon: {
-        width: '20%',
+        width: '10%',
         alignItems: 'flex-end'
     },
     iconEdit: {
@@ -85,7 +85,7 @@ export const styles = StyleSheet.create({
         textAlign: 'center'
     },
     flatListItemName: {
-        width: '30%',
+        width: '40%',
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -103,7 +103,7 @@ export const styles = StyleSheet.create({
         borderColor: 'black',
         backgroundColor: 'white',
         justifyContent: 'center',
-        width: 75,
+        width: 65,
         height: 30,
         textAlign: 'center'
     },
