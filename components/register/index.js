@@ -8,10 +8,26 @@ export default function Register() {
     useEffect(() => {
         console.log("Register form");
     }, []);
+
+    const [form, setForm] = useState({
+        fullName: '',
+        staffId: '',
+        Age: '',
+        password: '',
+        confirmPassword: ''
+    });
+
+    const updateField = e => {
+        setState({
+            ...form,
+            [e.target.name]: e.target.value
+        });
+    };
+
     const [staffId, setStaffId] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [selectedValue, setSelectedValue] = useState("java");
+    const [selectedValue, setSelectedValue] = useState(true);
 
     const staffIdRef = useRef(null);
     const passwordRef = useRef(null);
@@ -43,8 +59,10 @@ export default function Register() {
             <ScrollView style={globalStyles.viewWrapperText}>
                 <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Full Name</Text>
                 <TextInput
+
                     style={globalStyles.input}
-                    onChangeText={value => setStaffId(value)}
+                    // onChangeText={value => setStaffId(value)}
+                    onChange={updateField}
                     value={staffId}
                     returnKeyType="next"
                     blurOnSubmit={false}
@@ -80,8 +98,8 @@ export default function Register() {
                         style={{ width: '100%', height: 30 }}
                         onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
                     >
-                        <Picker.Item label="Male" value="java" />
-                        <Picker.Item label="Female" value="js" />
+                        <Picker.Item label="Male" value={true} />
+                        <Picker.Item label="Female" value={false} />
                     </Picker>
                 </View>
                 <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Password</Text>
