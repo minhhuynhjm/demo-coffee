@@ -7,7 +7,6 @@ const initState = {
 }
 
 export default function CartReducer(state = initState, action) {
-    console.log(action);
     switch (action.type) {
         case actionTypes.ADD_PRODUCT_TO_CART:
             let tempItem = {}
@@ -40,7 +39,6 @@ export default function CartReducer(state = initState, action) {
 
                 const cartItem1 = findItemInCart(state.addedItems, action.payload.id);
                 if (cartItem1 != null) {
-                    console.log("Hello Value");
                     let new_items = state.addedItems.filter(item => item.id !== action.payload.id)
                     let newTotalPrice = state.totalPrice - (cartItem1.price * cartItem1.quantity);
                     let totalItem = state.countTotalItem - cartItem1.quantity;
@@ -60,16 +58,31 @@ export default function CartReducer(state = initState, action) {
             else {
                 let tempItem = {}
                 const index = findExistItemInCart(state.addedItems, action.payload.id);
-
                 if (index !== -1) {
                     // Exist in cart
-                    state.addedItems[index].quantity = action.count;
-                    let totalItem = state.countTotalItem + action.count;
-                    let newTotalPrice = state.totalPrice + (action.payload.price * action.count);
-                    return {
-                        ...state,
-                        countTotalItem: totalItem,
-                        totalPrice: newTotalPrice
+                    // increase
+                    if (state.addedItems[index].quantity < action.count) {
+                        let quantityAdd = action.count - state.addedItems[index].quantity;
+                        let totalItem = state.countTotalItem + quantityAdd;
+                        let newTotalPrice = state.totalPrice + (action.payload.price * quantityAdd);
+                        state.addedItems[index].quantity = action.count;
+                        return {
+                            ...state,
+                            countTotalItem: totalItem,
+                            totalPrice: newTotalPrice
+                        }
+                    }
+                    // decrease
+                    else {
+                        let quantityAdd = state.addedItems[index].quantity - action.count;
+                        let totalItem = state.countTotalItem - quantityAdd;
+                        let newTotalPrice = state.totalPrice - (action.payload.price * quantityAdd);
+                        state.addedItems[index].quantity = action.count;
+                        return {
+                            ...state,
+                            countTotalItem: totalItem,
+                            totalPrice: newTotalPrice
+                        }
                     }
                 }
                 else {

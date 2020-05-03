@@ -7,8 +7,10 @@ import Header from '../header/index'
 import { globalStyles } from '../../styles/global'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { styles } from './styles'
+import NumericInput from 'react-native-numeric-input'
 
 function FlatListItem({ item }) {
+
 
     const dispatch = useDispatch();
 
@@ -22,7 +24,6 @@ function FlatListItem({ item }) {
 
     const addMultipleItem = (count) => {
         let num = parseInt(count) || 0;
-        console.log('item:', item, 'count:', num);
         dispatch(addMuptipleItemToCart(item, num))
     }
 
@@ -43,8 +44,10 @@ function FlatListItem({ item }) {
                     // editable={false}
                     onChangeText={value => addMultipleItem(value)}
                     keyboardType='numeric'
+                    blurOnSubmit={false}
                     value={`${item.quantity}`} >
                 </TextInput>
+                {/* <NumericInput value={item.quantity} onChange={value => addMultipleItem(value)} /> */}
                 <TouchableOpacity onPress={pressAddButton}>
                     <Text style={styles.flatListItemButtonAdd}>  + </Text>
                 </TouchableOpacity>
@@ -65,25 +68,25 @@ export default function Menu() {
     return (
 
         <SafeAreaView style={globalStyles.container}>
-            <DismissKeyboard>
-                <View style={globalStyles.header}>
-                    <Header></Header>
-                </View>
-                <View style={[globalStyles.content, globalStyles.bgColorGray]}>
-                    <View style={styles.wrapperContent}>
-                        <View style={globalStyles.cardCenter}>
-                            <Text style={globalStyles.textWhiteBoldSegeoUI}>Menu</Text>
-                        </View>
-                        <FlatList
-                            style={styles.flatListWrapper}
-                            data={mergeData}
-                            renderItem={({ item, index }) => <FlatListItem item={item} index={index} ></FlatListItem>}
-                            keyExtractor={(item) => `key-${item.id}`}
-                            extraData={props}
-                        ></FlatList>
+            {/* <DismissKeyboard> */}
+            <View style={globalStyles.header}>
+                <Header></Header>
+            </View>
+            <View style={[globalStyles.content, globalStyles.bgColorGray]}>
+                <View style={styles.wrapperContent}>
+                    <View style={globalStyles.cardCenter}>
+                        <Text style={globalStyles.textWhiteBoldSegeoUI}>Menu</Text>
                     </View>
+                    <FlatList
+                        style={styles.flatListWrapper}
+                        data={mergeData}
+                        renderItem={({ item, index }) => <FlatListItem item={item} index={index} ></FlatListItem>}
+                        keyExtractor={(item) => `key-${item.id}`}
+                        extraData={props}
+                    ></FlatList>
                 </View>
-            </DismissKeyboard>
+            </View>
+            {/* </DismissKeyboard> */}
         </SafeAreaView>
     );
 }
