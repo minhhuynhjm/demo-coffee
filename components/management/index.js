@@ -1,19 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, FlatList, TouchableOpacity, TextInput, Image, Alert } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity, TextInput, Image, Alert, Keyboard } from 'react-native';
 import { globalStyles } from '../../styles/global'
 import { styles } from './styles'
 import ManagementData from '../../mock_data/managementData'
 
+
 function FlatListItem({ item, isEdit, checkDelete, checkPoint }) {
     const [isAdd, setIsAdd] = useState(false);
-
+    const [tempId, setTempId] = useState(0);
     useEffect(() => {
         if (!isEdit) {
             setIsAdd(false);
         }
     }, [isEdit]);
 
-    const pressAddButton = () => {
+    useEffect(() => {
+        Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+        return () => {
+            Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+        };
+        // cleanup function
+        // return () => {
+        //     Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+        // };
+    }, []);
+
+    const _keyboardDidHide = () => {
+        if (item.id === tempId) {
+            alert("Keyboard Hidden");
+        }
+    };
+
+    const pressAddButton = (id) => {
+        console.log('value', id);
+        setTempId(id);
+        console.log('isAdd:', isAdd);
         setIsAdd(true);
     }
 
@@ -56,7 +77,7 @@ function FlatListItem({ item, isEdit, checkDelete, checkPoint }) {
             <View style={styles.flatListItemAdd}>
                 <View>
                     {isEdit ? (
-                        <TouchableOpacity onPress={pressAddButton}>
+                        <TouchableOpacity onPress={() => pressAddButton(item.id)}>
                             <Text style={styles.textAdd}>+  </Text>
                         </TouchableOpacity>
                     ) : null}
@@ -67,6 +88,7 @@ function FlatListItem({ item, isEdit, checkDelete, checkPoint }) {
                             keyboardType='numeric'
                             onChangeText={value => addPointInput(value)}
                             value={item.bonus_point}
+                            onSubmitEditing={Keyboard.dismiss}
                         >
                         </TextInput>
                     </View>
