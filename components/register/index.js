@@ -7,12 +7,31 @@ import RNPickerSelect from 'react-native-picker-select';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function Register() {
-    const [fullName, setFullName] = useState('');
+    useEffect(() => {
+        console.log("Register form");
+    }, []);
+
+    const [form, setForm] = useState({
+        fullName: '',
+        staffId: '',
+        Age: '',
+        password: '',
+        confirmPassword: ''
+    });
+
+    const updateField = e => {
+        setState({
+            ...form,
+            [e.target.name]: e.target.value
+        });
+    };
+
     const [staffId, setStaffId] = useState('');
     const [age, setAge] = useState('');
     const [gender, setGender] = useState(true);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [selectedValue, setSelectedValue] = useState(true);
 
     const staffIdRef = useRef(null);
     const ageRef = useRef(null);
@@ -55,9 +74,11 @@ export default function Register() {
             <ScrollView style={globalStyles.viewWrapperText}>
                 <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Full Name</Text>
                 <TextInput
+
                     style={globalStyles.input}
-                    onChangeText={value => setFullName(value)}
-                    value={fullName}
+                    // onChangeText={value => setStaffId(value)}
+                    onChange={updateField}
+                    value={staffId}
                     returnKeyType="next"
                     blurOnSubmit={false}
                     onSubmitEditing={() => staffIdRef.current.focus()}
@@ -87,19 +108,15 @@ export default function Register() {
                 />
 
                 <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Sex</Text>
-                <View style={styles.wrapperDropdown}>
-                    <RNPickerSelect
-                        style={pickerSelectStyles}
-                        placeholder={{}}
-                        InputAccessoryView={() => null}
-                        onValueChange={(value) => setGender(value)}
-                        items={[
-                            { label: 'Male', value: true },
-                            { label: 'Female', value: false },
-                        ]}
-                        value={gender}
-                        Icon={() => { return <Ionicons name="md-arrow-dropdown" size={30} color="black" /> }}
-                    />
+                <View style={{ borderWidth: 1, borderColor: '#a5a5a5', marginBottom: 20, borderRadius: 3, }}>
+                    <Picker
+                        selectedValue={selectedValue}
+                        style={{ width: '100%', height: 30 }}
+                        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                    >
+                        <Picker.Item label="Male" value={true} />
+                        <Picker.Item label="Female" value={false} />
+                    </Picker>
                 </View>
 
                 <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Password</Text>

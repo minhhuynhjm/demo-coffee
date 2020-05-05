@@ -33,7 +33,8 @@ function FlatListItem({ item, isEdit, checkDelete, checkPoint }) {
     }
 
     const addPointInput = (point) => {
-        checkPoint({ id: item.id, point: +item.point + +point });
+        point = point.replace(/[^0-9]/g, '');
+        checkPoint({ id: item.id, point: +item.point + +point }, point);
     }
 
     return (
@@ -65,6 +66,7 @@ function FlatListItem({ item, isEdit, checkDelete, checkPoint }) {
                         <TextInput style={styles.textInput}
                             keyboardType='numeric'
                             onChangeText={value => addPointInput(value)}
+                            value={item.bonus_point}
                         >
                         </TextInput>
                     </View>
@@ -78,8 +80,9 @@ export default function Management() {
     const [isEdit, setIsEdit] = useState(false);
     const [listUpdatePoint, setListUpdatePoint] = useState([]);
     const [listDeletePoint, setListDeletePoint] = useState([]);
-    const [flatListData, setFlatListData] = useState(ManagementData);
-    const cloneData = [...ManagementData];
+    const cloneData = [...ManagementData.map(item => Object.assign({}, item, { bonus_point: "" }))];
+    const [flatListData, setFlatListData] = useState(cloneData);
+
 
     const checkDelete = (_id) => {
         setFlatListData(flatListData.filter(x => x.id != _id));
@@ -88,7 +91,14 @@ export default function Management() {
         setListUpdatePoint(listUpdatePoint.filter(x => x.id != _id));
     }
 
-    const checkPoint = (item) => {
+    const checkPoint = (item, bonus) => {
+        // update value in flatlistData
+        const updateValue = [...flatListData];
+        const index = updateValue.findIndex(x => x.id === item.id);
+        updateValue[index].bonus_point = bonus;
+        setFlatListData(updateValue);
+
+
         const tempListUpdate = [...listUpdatePoint];
         const updateItem = tempListUpdate.find(x => x.id === item.id);
         if (updateItem) {

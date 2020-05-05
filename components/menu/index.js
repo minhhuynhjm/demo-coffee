@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, FlatList, TouchableOpacity, TextInput, SafeAreaView, RefreshControl } from 'react-native';
 import menuData from '../../mock_data/menuData';
 import { useSelector, useDispatch } from "react-redux";
-import { addProductToCart, removeProductToCart } from '../../redux/actions'
+import { addProductToCart, removeProductToCart, addMuptipleItemToCart } from '../../redux/actions'
 import Header from '../header/index'
 import Loader from '../loading/index'
 import { globalStyles } from '../../styles/global'
@@ -10,6 +10,7 @@ import { styles } from './styles'
 import { GetOrderMenu } from '../../api/webServer/orderService';
 
 function FlatListItem({ item }) {
+
 
     const dispatch = useDispatch();
 
@@ -20,6 +21,12 @@ function FlatListItem({ item }) {
     const pressSubButton = () => {
         dispatch(removeProductToCart(item));
     }
+
+    const addMultipleItem = (count) => {
+        let num = parseInt(count) || 0;
+        dispatch(addMuptipleItemToCart(item, num))
+    }
+
     return (
         <View style={styles.flatListItemContentWrapper}>
             <View style={[styles.flatListMarginItem, styles.flatListItemViewProduct]}>
@@ -34,10 +41,13 @@ function FlatListItem({ item }) {
                     <Text style={styles.flatListItemButtonAdd}> -  </Text>
                 </TouchableOpacity>
                 <TextInput style={styles.flatListItemTextInput}
-                    editable={false}
+                    // editable={false}
+                    onChangeText={value => addMultipleItem(value)}
                     keyboardType='numeric'
+                    blurOnSubmit={false}
                     value={`${item.quantity}`} >
                 </TextInput>
+                {/* <NumericInput value={item.quantity} onChange={value => addMultipleItem(value)} /> */}
                 <TouchableOpacity onPress={pressAddButton}>
                     <Text style={styles.flatListItemButtonAdd}>  + </Text>
                 </TouchableOpacity>

@@ -79,21 +79,22 @@ export const globalStyles = StyleSheet.create({
     textFranklinWhite: {
         color: 'white',
         fontFamily: 'Franklin',
-        fontSize: 18,
+        fontSize: 16,
     },
     textFranklinWhiteBold: {
         fontWeight: "bold",
         color: 'white',
         fontFamily: 'Franklin',
-        fontSize: 18,
+        fontSize: 16,
     },
     textSegoeUI: {
         fontFamily: 'SegoeUI',
-        fontSize: 18,
+        fontSize: 16,
     },
     textBoldSegoeUI: {
-        fontFamily: 'SegoeUIBold',
-        fontSize: 18,
+        fontWeight: "bold",
+        fontFamily: 'SegoeUI',
+        fontSize: 16,
     },
     textSegoeUI16: {
         fontFamily: 'SegoeUI',
@@ -106,11 +107,12 @@ export const globalStyles = StyleSheet.create({
     textWhiteSegoeUI: {
         color: 'white',
         fontFamily: 'SegoeUI',
-        fontSize: 18,
+        fontSize: 16,
     },
     textWhiteBoldSegeoUI: {
         color: 'white',
-        fontFamily: 'SegoeUIBold',
-        fontSize: 18,
+        fontWeight: "bold",
+        fontFamily: 'SegoeUI',
+        fontSize: 16,
     }
 });

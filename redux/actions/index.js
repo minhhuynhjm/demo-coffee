@@ -14,6 +14,15 @@ export const removeProductToCart = (item) => {
     }
 }
 
+export const addMuptipleItemToCart = (item, count) => {
+    return {
+        type: actionTypes.ADD_MUPTIPLE_ITEM_TO_CARD,
+        payload: item,
+        count: count
+    }
+}
+
+
 export const clearProductFromCart = () => {
     return {
         type: actionTypes.CLEAR_PRODUCT_FROM_CART,
