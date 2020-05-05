@@ -1,21 +1,30 @@
 var userData = [
     {
+        'id': 1,
+        'name': 'OKAMOTO MATSUDA',
+        'age': 25,
+        'gender': true,
         'staffId': 'test',
         'password': 'abc123',
-        'name': 'OKAMOTO MATSUDA',
         'point': 100000
     },
     {
-        'staffId': 'hello',
-        'password': 'abc123',
-        'name': 'Hello World',
-        'point': 1332
+        'id': 2,
+        'name': 'KEVIN',
+        'age': 25,
+        'gender': false,
+        'staffId': 'kevin',
+        'password': '123456',
+        'point': 100000
     },
     {
-        'staffId': 'kevin',
+        'id': 3,
+        'name': 'HELLO',
+        'age': 25,
+        'gender': false,
+        'staffId': 'hello',
         'password': 'abc123',
-        'name': 'Kevin Mark',
-        'point': 1000
+        'point': 100000
     },
 ]
 

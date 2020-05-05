@@ -14,11 +14,11 @@ export function LogoLeft({ navigation }) {
 }
 
 export function LogoRight({ navigation }) {
-    const props = useSelector((state) => (state.cartReducer));
+    const cartState = useSelector((state) => (state.cartReducer));
     return (
         <View>
             <View style={styles.borderCartItem}>
-                <Text style={styles.textCartItem}> {props.countTotalItem} </Text>
+                <Text style={styles.textCartItem}> {cartState.countTotalItem} </Text>
             </View>
             <TouchableOpacity onPress={() => navigation?.navigate('Order')}>
                 <Image
@@ -53,7 +53,10 @@ export function TextTitle() {
 
 const styles = StyleSheet.create({
     imageLogoLeft: {
-        width: 45, height: 45, marginLeft: 10, marginBottom: 1
+        width: 45,
+        height: 45,
+        marginLeft: 10,
+        marginBottom: 1
     },
     imageLogoRight: {
         width: 30,

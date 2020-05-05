@@ -56,5 +56,5 @@ export const styles = StyleSheet.create({
     flatListItemButtonAdd: {
         fontSize: 32,
         textAlign: 'center'
-    }
+    },
 });

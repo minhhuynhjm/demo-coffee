@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
 import Toast from 'react-native-easy-toast';
 import { removeProductToCart, clearProductFromCart } from '../../redux/actions'
 import { useSelector, useDispatch } from "react-redux";
@@ -43,13 +43,16 @@ export default function Order({ navigation }) {
     const dispatch = useDispatch();
     const [showAdd, setShowAdd] = useState(false);
 
-    const props = useSelector((state) => (state.cartReducer));
-    const orderData = props.addedItems;
-    let totalPrice = props.totalPrice;
-    let countTotalItem = props.countTotalItem;
+    const cartState = useSelector((state) => (state.cartReducer));
+    const orderData = cartState.listItems;
+    let totalPrice = cartState.totalPrice;
+    let countTotalItem = cartState.countTotalItem;
 
     const clickOrderSuccessful = () => {
         setShowAdd(true);
+
+        // console.log('Order Data', orderData);
+
         toastRef.current.show(<View><Text style={styles.textToast}>order successfully !!</Text></View>)
         setTimeout(() => {
             dispatch(clearProductFromCart());
@@ -61,7 +64,7 @@ export default function Order({ navigation }) {
         countTotalItem === 0 ? navigation.goBack() :
             Alert.alert(
                 "Infomation",
-                "Are you want to order !!",
+                "Are you want to order ?",
                 [
                     {
                         text: "Cancel",
@@ -88,7 +91,7 @@ export default function Order({ navigation }) {
                         data={orderData}
                         renderItem={({ item, index }) => <FlatListItem item={item} index={index} showAdd={showAdd}></FlatListItem>}
                         keyExtractor={(item) => `key-${item.id}`}
-                        extraData={props}
+                        extraData={cartState}
                     >
                     </FlatList>
                 </View>
@@ -110,7 +113,7 @@ export default function Order({ navigation }) {
                                             <Text style={globalStyles.textSegoeUI}> {totalPrice} </Text>
                                         </View>
                                         <View>
-                                            <Text style={[styles.flatListItemButtonAdd, styles.textColor]} > &#32; </Text>
+                                            <Text style={[styles.flatListItemButtonAdd, styles.textColor]} > - </Text>
                                         </View>
                                     </View>
                                 </View>

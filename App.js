@@ -19,6 +19,7 @@ export default function App() {
   let [fontsLoaded] = useFonts({
     'Franklin': require('./assets/fonts/Franklin-Gothic-Demi-Cond-Regular.ttf'),
     'SegoeUI': require('./assets/fonts/segoeui.ttf'),
+    'SegoeUIBold': require('./assets/fonts/Segoe-UI-Bold.ttf'),
   });
   if (!fontsLoaded) {
     return <AppLoading />;

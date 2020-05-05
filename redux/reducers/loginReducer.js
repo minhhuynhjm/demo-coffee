@@ -1,4 +1,4 @@
-import { actionTypes } from "../../constants/actionTypes"
+import { actionTypes } from "../../constants"
 
 const initState = {
     isSignIn: false,
@@ -7,7 +7,6 @@ const initState = {
 }
 
 export default function LoginReducer(state = initState, action) {
-    // console.log(action);
     switch (action.type) {
         case actionTypes.USER_LOGIN:
             return {

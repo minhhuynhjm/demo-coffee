@@ -1,12 +1,13 @@
-import React, { } from 'react';
-import { Text, View, FlatList, TouchableOpacity, TextInput, Keyboard, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, FlatList, TouchableOpacity, TextInput, SafeAreaView, RefreshControl } from 'react-native';
 import menuData from '../../mock_data/menuData';
 import { useSelector, useDispatch } from "react-redux";
 import { addProductToCart, removeProductToCart } from '../../redux/actions'
 import Header from '../header/index'
+import Loader from '../loading/index'
 import { globalStyles } from '../../styles/global'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { styles } from './styles'
+import { GetOrderMenu } from '../../api/webServer/orderService';
 
 function FlatListItem({ item }) {
 
@@ -46,36 +47,64 @@ function FlatListItem({ item }) {
 }
 
 export default function Menu() {
-    const props = useSelector((state) => (state.cartReducer));
-    const listItemState = props.addedItems;
-    const mergeData = mergeState(menuData, listItemState);
-    const DismissKeyboard = ({ children }) => (
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            {children}
-        </TouchableWithoutFeedback>
-    );
-    return (
+    const cartState = useSelector((state) => (state.cartReducer));
+    const listItemState = cartState.listItems;
+    // const mergeData = mergeState(menuData, listItemState); // Mockup Data
+    const [menuDataApi, setMenuDataApi] = useState([]);
+    const mergeData = mergeState(menuDataApi, listItemState);
+    const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
 
+    const onRefreshData = React.useCallback(() => {
+        setRefreshing(true);
+        fetchData();
+    }, [refreshing]);
+
+    const fetchData = async () => {
+        try {
+            const result = await GetOrderMenu();
+            setMenuDataApi(result.data);
+            // console.log(result.data);
+            setLoading(false);
+            setRefreshing(false);
+        } catch (error) {
+            // console.log(error.response);
+            setLoading(false);
+            setRefreshing(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    return (
         <SafeAreaView style={globalStyles.container}>
-            <DismissKeyboard>
-                <View style={globalStyles.header}>
-                    <Header></Header>
-                </View>
-                <View style={[globalStyles.content, globalStyles.bgColorGray]}>
-                    <View style={styles.wrapperContent}>
-                        <View style={globalStyles.cardCenter}>
-                            <Text style={globalStyles.textWhiteBoldSegeoUI}>Menu</Text>
-                        </View>
-                        <FlatList
-                            style={styles.flatListWrapper}
-                            data={mergeData}
-                            renderItem={({ item, index }) => <FlatListItem item={item} index={index} ></FlatListItem>}
-                            keyExtractor={(item) => `key-${item.id}`}
-                            extraData={props}
-                        ></FlatList>
+            {loading ? (<Loader />)
+                :
+                (<>
+                    <View style={globalStyles.header}>
+                        <Header></Header>
                     </View>
-                </View>
-            </DismissKeyboard>
+                    <View style={[globalStyles.content, globalStyles.bgColorGray]}>
+                        <View style={styles.wrapperContent}>
+                            <View style={globalStyles.cardCenter}>
+                                <Text style={globalStyles.textWhiteBoldSegeoUI}>Menu</Text>
+                            </View>
+                            <FlatList
+                                style={styles.flatListWrapper}
+                                data={mergeData}
+                                renderItem={({ item, index }) => <FlatListItem item={item} index={index} ></FlatListItem>}
+                                keyExtractor={(item) => `key-${item.id}`}
+                                extraData={cartState}
+                                refreshing={refreshing}
+                                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefreshData} />}
+                            ></FlatList>
+                        </View>
+                    </View>
+                </>
+                )
+            }
         </SafeAreaView>
     );
 }

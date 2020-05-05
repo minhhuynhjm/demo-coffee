@@ -11,8 +11,4 @@ function Dialog(title, message) {
     );
 }
 
-function NumberWithCommas(value) {
-    return value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-export const Common = { Dialog, NumberWithCommas }
+export const Common = { Dialog }

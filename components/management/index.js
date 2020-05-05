@@ -56,7 +56,7 @@ function FlatListItem({ item, isEdit, checkDelete, checkPoint }) {
                 <View>
                     {isEdit ? (
                         <TouchableOpacity onPress={pressAddButton}>
-                            <Text style={styles.textAdd}>+    </Text>
+                            <Text style={styles.textAdd}>+  </Text>
                         </TouchableOpacity>
                     ) : null}
                 </View>
@@ -113,9 +113,24 @@ export default function Management() {
     }
 
     const onClickSave = () => {
+        Alert.alert(
+            "Save Information",
+            `Are you sure you want to save changes ?`,
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                { text: "Save", onPress: checkSave }
+            ],
+            { cancelable: false }
+        );
+    }
+
+    const checkSave = () => {
         console.log('save ')
         const objectUpdate = { account_delete: listDeletePoint, account_update: listUpdatePoint }
-        console.log(objectUpdate)
+        // console.log(objectUpdate)
 
         // clean state
         setIsEdit(false);

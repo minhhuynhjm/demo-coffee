@@ -6,49 +6,64 @@ import { useDispatch } from "react-redux";
 import { userLogin } from '../../redux/actions'
 import { Common } from '../../utilities/Common'
 import { styles } from './styles'
+import { LoginAuth } from '../../api/webServer/accountService';
 
 export default function Login() {
-    useEffect(() => {
-        console.log("Login form");
-    }, []);
-
     const [staffId, setStaffId] = useState('');
     const [password, setPassword] = useState('');
     const staffIdRef = useRef(null);
     const passwordRef = useRef(null);
     const dispatch = useDispatch();
 
+    const Authencation = async (username, passowrd) => {
+        try {
+            const result = await LoginAuth(username, passowrd);
+            // console.log(result.data);
+            dispatch(userLogin(result.data));
+        } catch (error) {
+            // console.log(error.response);
+        }
+    };
+
     const onClickButtonLogin = () => {
         const trimStaffId = staffId.trim();
         const trimPassword = password.trim();
-        const userIndex = userData.findIndex(x => x.staffId === trimStaffId && x.password == trimPassword);
-        if (userIndex !== -1) {
-            let user_login = {
-                staffid: trimStaffId,
-                password: trimPassword,
-                point: userData[userIndex].point,
-                name: userData[userIndex].name
-            }
-            dispatch(userLogin(user_login));
-        }
-        else {
-            if (staffId.trim() === '' && password.trim() === '') {
-                staffIdRef.current.focus();
-                Common.Dialog("Notification", "Please input staffid and password")
-            }
-            else if (staffId.trim() === '') {
-                staffIdRef.current.focus();
-                Common.Dialog("Notification", "Please input staffId")
-            }
-            else if (password.trim() === '') {
-                passwordRef.current.focus();
-                Common.Dialog("Notification", "Please input password")
-            }
-            else {
-                Common.Dialog("Notification", "Incorrect staffid or password")
-            }
-        }
+
+        Authencation(trimStaffId, trimPassword);
+        // const userIndex = userData.findIndex(x => x.staffId === trimStaffId && x.password == trimPassword);
+        // if (userIndex !== -1) {
+        //     let user_login = {
+        //         staffid: trimStaffId,
+        //         password: trimPassword,
+        //         point: userData[userIndex].point,
+        //         name: userData[userIndex].name,
+        //         age: userData[userIndex].age,
+        //         gender: userData[userIndex].gender,
+        //     }
+        //     dispatch(userLogin(user_login));
+        // }
+        // else {
+        //     if (staffId.trim() === '' && password.trim() === '') {
+        //         staffIdRef.current.focus();
+        //         Common.Dialog("Notification", "Please input staffid and password")
+        //     }
+        //     else if (staffId.trim() === '') {
+        //         staffIdRef.current.focus();
+        //         Common.Dialog("Notification", "Please input staffId")
+        //     }
+        //     else if (password.trim() === '') {
+        //         passwordRef.current.focus();
+        //         Common.Dialog("Notification", "Please input password")
+        //     }
+        //     else {
+        //         Common.Dialog("Notification", "Incorrect staffid or password")
+        //     }
+        // }
     }
+
+    useEffect(() => {
+        console.log("login screen");
+    }, []);
 
     return (
         <View style={globalStyles.viewWrapperForm}>

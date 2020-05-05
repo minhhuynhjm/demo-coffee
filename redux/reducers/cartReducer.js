@@ -1,7 +1,7 @@
-import { actionTypes } from "../../constants/actionTypes"
+import { actionTypes } from "../../constants"
 
 const initState = {
-    addedItems: [],
+    listItems: [],
     countTotalItem: 0,
     totalPrice: 0
 }
@@ -10,11 +10,11 @@ export default function CartReducer(state = initState, action) {
     switch (action.type) {
         case actionTypes.ADD_PRODUCT_TO_CART:
             let tempItem = {}
-            const index = findExistItemInCart(state.addedItems, action.payload.id);
+            const index = findExistItemInCart(state.listItems, action.payload.id);
 
             if (index !== -1) {
                 // Exist in cart
-                state.addedItems[index].quantity++;
+                state.listItems[index].quantity++;
 
                 return {
                     ...state,
@@ -27,7 +27,7 @@ export default function CartReducer(state = initState, action) {
 
                 return {
                     ...state,
-                    addedItems: [...state.addedItems, tempItem],
+                    listItems: [...state.listItems, tempItem],
                     countTotalItem: ++state.countTotalItem,
                     totalPrice: state.totalPrice + action.payload.price
                 }
@@ -35,13 +35,13 @@ export default function CartReducer(state = initState, action) {
 
 
         case actionTypes.REMOVE_PRODUCT_FROM_CART:
-            const cartItem = findItemInCart(state.addedItems, action.payload.id);
+            const cartItem = findItemInCart(state.listItems, action.payload.id);
             if (cartItem.quantity === 1) {
-                let new_items = state.addedItems.filter(item => item.id !== action.payload.id)
+                let new_items = state.listItems.filter(item => item.id !== action.payload.id)
                 let newTotalPrice = state.totalPrice - cartItem.price;
                 return {
                     ...state,
-                    addedItems: new_items,
+                    listItems: new_items,
                     countTotalItem: --state.countTotalItem,
                     totalPrice: newTotalPrice
                 }
@@ -59,7 +59,7 @@ export default function CartReducer(state = initState, action) {
         case actionTypes.CLEAR_PRODUCT_FROM_CART:
             return {
                 ...state,
-                addedItems: [],
+                listItems: [],
                 countTotalItem: 0,
                 totalPrice: 0
             }

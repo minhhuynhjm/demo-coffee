@@ -10,9 +10,9 @@ export const globalStyles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#a5a5a5',
         borderRadius: 3,
-        fontSize: 14,
+        fontSize: 16,
         marginBottom: 20,
-        paddingHorizontal: 5
+        paddingHorizontal: 8
     },
     container: {
         backgroundColor: 'white',
@@ -26,7 +26,6 @@ export const globalStyles = StyleSheet.create({
     },
     content: {
         height: '90%',
-        // flex: 1,
     },
     flexAuto: {
         flexGrow: 1,
@@ -46,7 +45,7 @@ export const globalStyles = StyleSheet.create({
         alignItems: 'center'
     },
     viewWrapperForm: {
-        paddingTop: 15,
+        paddingVertical: 15,
         backgroundColor: 'white',
         alignItems: 'center',
     },
@@ -59,7 +58,7 @@ export const globalStyles = StyleSheet.create({
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
         paddingHorizontal: 10,
-        paddingVertical: 5,
+        paddingVertical: 8,
         marginBottom: 10
     },
     wrapperButtonLogin: {
@@ -93,9 +92,16 @@ export const globalStyles = StyleSheet.create({
         fontSize: 18,
     },
     textBoldSegoeUI: {
-        fontWeight: "bold",
-        fontFamily: 'SegoeUI',
+        fontFamily: 'SegoeUIBold',
         fontSize: 18,
+    },
+    textSegoeUI16: {
+        fontFamily: 'SegoeUI',
+        fontSize: 16,
+    },
+    textBoldSegoeUI16: {
+        fontFamily: 'SegoeUIBold',
+        fontSize: 16,
     },
     textWhiteSegoeUI: {
         color: 'white',
@@ -104,8 +110,7 @@ export const globalStyles = StyleSheet.create({
     },
     textWhiteBoldSegeoUI: {
         color: 'white',
-        fontWeight: "bold",
-        fontFamily: 'SegoeUI',
+        fontFamily: 'SegoeUIBold',
         fontSize: 18,
     }
 });
