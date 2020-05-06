@@ -14,7 +14,6 @@ axiosInstance.interceptors.request.use(function (config) {
         config.headers.authorization = 'Bearer ' + accessToken;
     }
 
-    console.log('request');
     return config;
 }, function (error) {
     // Do something with request error 
@@ -22,11 +21,8 @@ axiosInstance.interceptors.request.use(function (config) {
 });
 
 axiosInstance.interceptors.response.use(function (response) {
-    console.log('response');
-    return response;
 }, function (error) {
     if (error.response.status === 401) {
-        console.log('401', error);
         // redirect to login page
     }
     return Promise.reject(error);

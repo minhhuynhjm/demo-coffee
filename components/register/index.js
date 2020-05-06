@@ -1,37 +1,18 @@
 import React, { useState, useRef } from 'react';
 import { Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { globalStyles } from '../../styles/global'
-import { Common } from '../../utilities/Common'
+import { isRequired, isMatching } from '../../utilities/Common'
 import { pickerSelectStyles, styles } from './styles'
 import RNPickerSelect from 'react-native-picker-select';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function Register() {
-    useEffect(() => {
-        console.log("Register form");
-    }, []);
-
-    const [form, setForm] = useState({
-        fullName: '',
-        staffId: '',
-        Age: '',
-        password: '',
-        confirmPassword: ''
-    });
-
-    const updateField = e => {
-        setState({
-            ...form,
-            [e.target.name]: e.target.value
-        });
-    };
-
+    const [fullName, setFullName] = useState('');
     const [staffId, setStaffId] = useState('');
     const [age, setAge] = useState('');
     const [gender, setGender] = useState(true);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [selectedValue, setSelectedValue] = useState(true);
 
     const staffIdRef = useRef(null);
     const ageRef = useRef(null);
@@ -39,34 +20,15 @@ export default function Register() {
     const confirmPasswordRef = useRef(null);
 
     const onClickRegister = () => {
-        const trimFullName = fullName.trim();
-        const trimStaffId = staffId.trim();
-        const trimAge = age.trim();
-        const trimPassword = password.trim();
-        const trimConfirmPassword = confirmPassword.trim();
-
-        if (trimFullName === '') {
-            Common.Dialog("Notification", "Full Name is required");
-        }
-        else if (trimStaffId === '') {
-            Common.Dialog("Notification", "StaffId is required");
-        }
-        else if (trimAge === '') {
-            Common.Dialog("Notification", "Age is required");
-        }
-        else if (trimPassword === '') {
-            Common.Dialog("Notification", "Password is required");
-        }
-        else if (trimConfirmPassword === '') {
-            Common.Dialog("Notification", "Confirm Password is required");
-        }
-        else if (trimPassword !== trimConfirmPassword) {
-            Common.Dialog("Notification", "Password are not matching");
-        }
-        else {
-            console.log("Success");
+        if (isRequired(fullName, "Full Name")
+            && isRequired(staffId, "StaffId")
+            && isRequired(age, "Age")
+            && isRequired(password, "Password")
+            && isRequired(confirmPassword, "Confirm Password")
+            && isMatching(password, confirmPassword)) {
             // sign up
         }
+
     }
 
     return (
@@ -74,11 +36,9 @@ export default function Register() {
             <ScrollView style={globalStyles.viewWrapperText}>
                 <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Full Name</Text>
                 <TextInput
-
                     style={globalStyles.input}
-                    // onChangeText={value => setStaffId(value)}
-                    onChange={updateField}
-                    value={staffId}
+                    onChangeText={value => setFullName(value)}
+                    value={fullName}
                     returnKeyType="next"
                     blurOnSubmit={false}
                     onSubmitEditing={() => staffIdRef.current.focus()}
@@ -108,15 +68,19 @@ export default function Register() {
                 />
 
                 <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Sex</Text>
-                <View style={{ borderWidth: 1, borderColor: '#a5a5a5', marginBottom: 20, borderRadius: 3, }}>
-                    <Picker
-                        selectedValue={selectedValue}
-                        style={{ width: '100%', height: 30 }}
-                        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                    >
-                        <Picker.Item label="Male" value={true} />
-                        <Picker.Item label="Female" value={false} />
-                    </Picker>
+                <View style={styles.wrapperDropdown}>
+                    <RNPickerSelect
+                        style={pickerSelectStyles}
+                        placeholder={{}}
+                        InputAccessoryView={() => null}
+                        onValueChange={(value) => setGender(value)}
+                        items={[
+                            { label: 'Male', value: true },
+                            { label: 'Female', value: false },
+                        ]}
+                        value={gender}
+                        Icon={() => { return <Ionicons name="md-arrow-dropdown" size={30} color="black" /> }}
+                    />
                 </View>
 
                 <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Password</Text>

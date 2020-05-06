@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Header from '../header/index'
 import { globalStyles } from '../../styles/global'
 import { styles } from './styles'
+import { MESSAGE } from '../../constants';
 
 function FlatListItem({ item, showAdd }) {
     const dispatch = useDispatch();
@@ -51,9 +52,7 @@ export default function Order({ navigation }) {
     const clickOrderSuccessful = () => {
         setShowAdd(true);
 
-        // console.log('Order Data', orderData);
-
-        toastRef.current.show(<View><Text style={styles.textToast}>order successfully !!</Text></View>)
+        toastRef.current.show(<View><Text style={styles.textToast}>{MESSAGE.ORDER_SUCCESSFUL}</Text></View>)
         setTimeout(() => {
             dispatch(clearProductFromCart());
             navigation?.navigate('Menu')
@@ -63,8 +62,8 @@ export default function Order({ navigation }) {
     const onClickButtonOrder = () => {
         countTotalItem === 0 ? navigation.goBack() :
             Alert.alert(
-                "Infomation",
-                "Are you want to order ?",
+                MESSAGE.TITLE_INFORMATION,
+                MESSAGE.ORDER,
                 [
                     {
                         text: "Cancel",
@@ -121,7 +120,7 @@ export default function Order({ navigation }) {
                         </View>
                     ) :
                     <View style={[styles.viewNoItem, globalStyles.textSegoeUI]}>
-                        <Text>You have no items in your shopping cart.</Text>
+                        <Text>{MESSAGE.EMPTY_CART}</Text>
                     </View>
                 }
                 <View style={globalStyles.flexAuto}>

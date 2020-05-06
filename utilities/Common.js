@@ -1,8 +1,9 @@
 import { Alert } from 'react-native';
+import { MESSAGE } from '../constants';
 
-function Dialog(title, message) {
+export function DialogInfo(message) {
     Alert.alert(
-        title,
+        MESSAGE.TITLE_INFORMATION,
         message,
         [
             { text: "OK" }
@@ -11,4 +12,19 @@ function Dialog(title, message) {
     );
 }
 
-export const Common = { Dialog }
+export function isRequired(value, fieldName) {
+    if (value?.trim() === '') {
+        DialogInfo(fieldName + MESSAGE.IS_REQUIRED);
+        return false;
+    }
+    return true;
+}
+
+export function isMatching(password, confirmPassword) {
+    if (password?.trim() !== confirmPassword?.trim()) {
+        DialogInfo(MESSAGE.PASSWORD_NOT_MATCH);
+        return false;
+    }
+    return true;
+}
+

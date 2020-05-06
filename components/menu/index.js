@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, FlatList, TouchableOpacity, TextInput, SafeAreaView, RefreshControl } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity, TextInput, SafeAreaView, RefreshControl, Button } from 'react-native';
 import menuData from '../../mock_data/menuData';
 import { useSelector, useDispatch } from "react-redux";
-import { addProductToCart, removeProductToCart, addMuptipleItemToCart } from '../../redux/actions'
+import { addProductToCart, removeProductToCart } from '../../redux/actions'
 import Header from '../header/index'
 import Loader from '../loading/index'
 import { globalStyles } from '../../styles/global'
 import { styles } from './styles'
 import { GetOrderMenu } from '../../api/webServer/orderService';
+import Dialog from "react-native-dialog";
+import Modal from 'react-native-modal';
 
-function FlatListItem({ item }) {
-
+function FlatListItem({ item, showDialog }) {
 
     const dispatch = useDispatch();
 
@@ -22,9 +23,8 @@ function FlatListItem({ item }) {
         dispatch(removeProductToCart(item));
     }
 
-    const addMultipleItem = (count) => {
-        let num = parseInt(count) || 0;
-        dispatch(addMuptipleItemToCart(item, num))
+    const pressInput = () => {
+        showDialog(true, item);
     }
 
     return (
@@ -40,14 +40,13 @@ function FlatListItem({ item }) {
                 <TouchableOpacity onPress={pressSubButton} disabled={item.quantity === 0} >
                     <Text style={styles.flatListItemButtonAdd}> -  </Text>
                 </TouchableOpacity>
-                <TextInput style={styles.flatListItemTextInput}
-                    // editable={false}
-                    onChangeText={value => addMultipleItem(value)}
-                    keyboardType='numeric'
-                    blurOnSubmit={false}
-                    value={`${item.quantity}`} >
-                </TextInput>
-                {/* <NumericInput value={item.quantity} onChange={value => addMultipleItem(value)} /> */}
+                <TouchableOpacity onPress={pressInput}>
+                    <TextInput style={styles.flatListItemTextInput}
+                        editable={false}
+                        keyboardType='numeric'
+                        value={`${item.quantity}`} >
+                    </TextInput>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={pressAddButton}>
                     <Text style={styles.flatListItemButtonAdd}>  + </Text>
                 </TouchableOpacity>
@@ -59,11 +58,26 @@ function FlatListItem({ item }) {
 export default function Menu() {
     const cartState = useSelector((state) => (state.cartReducer));
     const listItemState = cartState.listItems;
-    // const mergeData = mergeState(menuData, listItemState); // Mockup Data
+    const mergeData = mergeState(menuData, listItemState); // Mockup Data
     const [menuDataApi, setMenuDataApi] = useState([]);
-    const mergeData = mergeState(menuDataApi, listItemState);
-    const [loading, setLoading] = useState(true);
+    // const mergeData = mergeState(menuDataApi, listItemState);
+    const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
+    const [dialogVisible, setDialogVisible] = useState(false);
+    const [inputValue, setInputValue] = useState('');
+    const dispatch = useDispatch();
+    const [currentItem, setCurrentItem] = useState('');
+
+    const showDialog = (isShow, item) => {
+        setInputValue(item.quantity);
+        setDialogVisible(isShow);
+        setCurrentItem(item);
+    }
+
+    const handleInputProduct = () => {
+        setDialogVisible(false);
+        dispatch(addProductToCart(currentItem));
+    }
 
     const onRefreshData = React.useCallback(() => {
         setRefreshing(true);
@@ -73,19 +87,19 @@ export default function Menu() {
     const fetchData = async () => {
         try {
             const result = await GetOrderMenu();
+            console.log(result);
             setMenuDataApi(result.data);
-            // console.log(result.data);
             setLoading(false);
             setRefreshing(false);
         } catch (error) {
-            // console.log(error.response);
+            console.log(error);
             setLoading(false);
             setRefreshing(false);
         }
     };
 
     useEffect(() => {
-        fetchData();
+        // fetchData();
     }, []);
 
     return (
@@ -104,7 +118,7 @@ export default function Menu() {
                             <FlatList
                                 style={styles.flatListWrapper}
                                 data={mergeData}
-                                renderItem={({ item, index }) => <FlatListItem item={item} index={index} ></FlatListItem>}
+                                renderItem={({ item }) => <FlatListItem item={item} showDialog={showDialog} ></FlatListItem>}
                                 keyExtractor={(item) => `key-${item.id}`}
                                 extraData={cartState}
                                 refreshing={refreshing}
@@ -112,10 +126,28 @@ export default function Menu() {
                             ></FlatList>
                         </View>
                     </View>
+
                 </>
                 )
             }
+            {/* <View>
+                <Dialog.Container visible={dialogVisible} contentStyle={{}}>
+                    <Dialog.Title>Nhập số lượng sản phẩm</Dialog.Title>
+                    <Dialog.Input autoFocus={true} wrapperStyle={{ paddingVertical: 2, borderBottomWidth: 2, borderBottomColor: 'black' }} keyboardType='numeric' value={`${inputValue}`} onChangeText={value => setInputValue(value)}></Dialog.Input>
+                    <Dialog.Button label="Cancel" onPress={() => setDialogVisible(false)} />
+                    <Dialog.Button label="Ok" onPress={handleInputProduct} />
+                </Dialog.Container>
+            </View> */}
+            <View style={{ flex: 1, paddingTop: 100 }}>
+                <Modal isVisible={dialogVisible}>
+                    <View style={{ flex: 1, backgroundColor: 'white' }}>
+                        <Text>Hello!</Text>
+                        <Button title="Hide modal" onPress={() => setDialogVisible(false)} />
+                    </View>
+                </Modal>
+            </View>
         </SafeAreaView>
+
     );
 }
 

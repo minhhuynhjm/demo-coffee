@@ -16,10 +16,6 @@ export const styles = StyleSheet.create({
     flatList: {
         width: '100%',
     },
-    hrLine: {
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
     marginItem: {
         marginBottom: 10,
         marginHorizontal: 10

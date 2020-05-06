@@ -1,21 +1,28 @@
-import React, { useEffect } from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import React from 'react';
+import { Text, View, TouchableOpacity, Image, Alert } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 import { userLogout } from '../../redux/actions'
 import { globalStyles } from '../../styles/global'
 import { styles } from './styles'
+import { MESSAGE } from '../../constants';
 
 export default function AccountInfomation() {
     const userState = useSelector((state) => (state.loginReducer.user));
-    console.log(userState);
     const dispatch = useDispatch();
     const onClickButtonLogout = () => {
-        dispatch(userLogout());
+        Alert.alert(
+            MESSAGE.TITLE_CONFIRMATION,
+            MESSAGE.LOGOUT,
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                { text: "Ok", onPress: () => dispatch(userLogout()) }
+            ],
+            { cancelable: false }
+        );
     }
-
-    useEffect(() => {
-        console.log("account information screen");
-    }, []);
 
     return (
         <View style={[styles.wrapperContent, globalStyles.bgColorGray]}>

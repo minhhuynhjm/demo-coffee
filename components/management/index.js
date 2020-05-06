@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, FlatList, TouchableOpacity, TextInput, Image, Alert } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity, TextInput, Image, Alert, Keyboard, RefreshControl } from 'react-native';
 import { globalStyles } from '../../styles/global'
 import { styles } from './styles'
-import ManagementData from '../../mock_data/managementData'
+import { GetUserManagement } from '../../api/webServer/managementService';
 
-function FlatListItem({ item, isEdit, checkDelete, checkPoint }) {
-    const [isAdd, setIsAdd] = useState(false);
 
+function FlatListItem({ item, isEdit, handleDelete, handleBonusPoint, handleShowInput, handleSavePoint }) {
     useEffect(() => {
-        if (!isEdit) {
-            setIsAdd(false);
-        }
-    }, [isEdit]);
+        Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+        // cleanup function
+        return () => {
+            Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+        };
+    }, []);
 
-    const pressAddButton = () => {
-        setIsAdd(true);
+    const _keyboardDidHide = () => {
+        if (item.isShowInput) {
+            console.log("_keyboardDidHide:", item.id);
+            handleSavePoint(item);
+        }
+    };
+
+    const pressAddButton = (item) => {
+        // console.log('pressAddButton:', item);
+        handleShowInput(item);
     }
 
     const pressDeleteButton = () => {
@@ -26,7 +35,7 @@ function FlatListItem({ item, isEdit, checkDelete, checkPoint }) {
                     text: "Cancel",
                     style: "cancel"
                 },
-                { text: "Delete", onPress: () => checkDelete(item.id) }
+                { text: "Delete", onPress: () => handleDelete(item.id) }
             ],
             { cancelable: false }
         );
@@ -34,17 +43,12 @@ function FlatListItem({ item, isEdit, checkDelete, checkPoint }) {
 
     const addPointInput = (point) => {
         point = point.replace(/[^0-9]/g, '');
-        checkPoint({ id: item.id, point: +item.point + +point }, point);
+        handleBonusPoint({ id: item.id, point: +item.point + +point }, point);
     }
 
     return (
         <View style={styles.wrapperFlatListItem}>
-            <View style={styles.iconDeleteWrapper}>
-                {isEdit ? (
-                    <TouchableOpacity onPress={pressDeleteButton}>
-                        <Image style={styles.iconDetele} source={require('../../assets/bin.png')} ></Image>
-                    </TouchableOpacity>
-                ) : null}
+            <View style={styles.paddingName}>
             </View>
             <View style={styles.flatListItemName}>
                 <Text style={styles.textContent}> {item.accountName}</Text>
@@ -56,97 +60,131 @@ function FlatListItem({ item, isEdit, checkDelete, checkPoint }) {
             <View style={styles.flatListItemAdd}>
                 <View>
                     {isEdit ? (
-                        <TouchableOpacity onPress={pressAddButton}>
+                        <TouchableOpacity onPress={() => pressAddButton(item)}>
                             <Text style={styles.textAdd}>+  </Text>
                         </TouchableOpacity>
                     ) : null}
                 </View>
-                {isAdd && isEdit ? (
+                {item.isShowInput && isEdit ? (
                     <View>
                         <TextInput style={styles.textInput}
                             keyboardType='numeric'
                             onChangeText={value => addPointInput(value)}
                             value={item.bonus_point}
+                            onSubmitEditing={Keyboard.dismiss}
                         >
                         </TextInput>
                     </View>
                 ) : null}
+                {!isEdit ? (
+                    <View>
+                        <TouchableOpacity onPress={pressDeleteButton}>
+                            <Image style={styles.iconDetele} source={require('../../assets/bin.png')} ></Image>
+                        </TouchableOpacity>
+                    </View>
+                ) : null}
             </View>
+
         </View>
     );
 }
 
 export default function Management() {
+
     const [isEdit, setIsEdit] = useState(false);
-    const [listUpdatePoint, setListUpdatePoint] = useState([]);
-    const [listDeletePoint, setListDeletePoint] = useState([]);
-    const cloneData = [...ManagementData.map(item => Object.assign({}, item, { bonus_point: "" }))];
-    const [flatListData, setFlatListData] = useState(cloneData);
+    const [flatListData, setFlatListData] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+    const [cloneData, setCloneData] = useState([]);
 
+    const fetchData = () => {
+        try {
+            GetUserManagement().then((result) => {
+                setFlatListData([...result, { bonus_point: "", isShowInput: false }]);
+            });
 
-    const checkDelete = (_id) => {
+            // setRefreshing(false);
+        } catch (error) {
+            // setRefreshing(false);
+        }
+    };
+
+    // const fetchData = async () => {
+    //     try {
+    //         const data = await GetUserManagement();
+    //         console.log(data);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
+
+    useEffect(() => {
+        console.log('render');
+        fetchData();
+    }, []);
+
+    const handleDelete = (_id) => {
+        console.log("Delete Item:", _id);
         setFlatListData(flatListData.filter(x => x.id != _id));
-        // add delete item
-        setListDeletePoint([...listDeletePoint, _id]);
-        setListUpdatePoint(listUpdatePoint.filter(x => x.id != _id));
+        // fetchData();
+        // Fetch Data
     }
 
-    const checkPoint = (item, bonus) => {
+    const handleSavePoint = (item) => {
+        console.log(item)
+        console.log("handleSavePoint");
+        if (item.bonus_point) {
+            Alert.alert(
+                "Save Information",
+                `Are you sure you want to save changes ?`,
+                [
+                    {
+                        text: "Cancel", onPress: () => { fetchData() },
+                        style: "cancel"
+                    },
+                    { text: "Save", onPress: () => { savePointToDB(item) } }
+                ],
+                { cancelable: false }
+            );
+        } else {
+            handleShowInput({ id: -1 }); // disable input
+        }
+
+    }
+
+    const handleShowInput = (item) => {
+        let updateValue = [...flatListData];
+
+        updateValue = updateValue.map(x => {
+            x.isShowInput = x.id == item.id;
+            return x;
+        });
+        // console.log("handleShowInput ", updateValue);
+        setFlatListData(updateValue);
+    }
+
+    const handleBonusPoint = (item, bonus) => {
         // update value in flatlistData
         const updateValue = [...flatListData];
+
         const index = updateValue.findIndex(x => x.id === item.id);
         updateValue[index].bonus_point = bonus;
         setFlatListData(updateValue);
-
-
-        const tempListUpdate = [...listUpdatePoint];
-        const updateItem = tempListUpdate.find(x => x.id === item.id);
-        if (updateItem) {
-            updateItem.point = item.point;
-            setListUpdatePoint(tempListUpdate);
-        }
-        else {
-            setListUpdatePoint([...listUpdatePoint, item]);
-        }
     }
 
     const pressEditButton = () => {
-        setIsEdit(true);
+        setIsEdit(!isEdit);
+        if (!isEdit) {
+            setFlatListData(flatListData.map(x => {
+                x.isShowInput = false;
+                return x;
+            }));
+        }
     }
 
-    const onClickCancel = () => {
-        // clean state
-        setIsEdit(false);
-        setFlatListData(cloneData);
-        setListUpdatePoint([]);
-        setListDeletePoint([]);
-    }
-
-    const onClickSave = () => {
-        Alert.alert(
-            "Save Information",
-            `Are you sure you want to save changes ?`,
-            [
-                {
-                    text: "Cancel",
-                    style: "cancel"
-                },
-                { text: "Save", onPress: checkSave }
-            ],
-            { cancelable: false }
-        );
-    }
-
-    const checkSave = () => {
-        console.log('save ')
-        const objectUpdate = { account_delete: listDeletePoint, account_update: listUpdatePoint }
-        // console.log(objectUpdate)
-
-        // clean state
-        setIsEdit(false);
-        setFlatListData(cloneData);
-        setListUpdatePoint([]);
-        setListDeletePoint([]);
+    const savePointToDB = (item) => {
+        console.log('--------save---------', item)
+        fetchData();
+        // handleShowInput({ id: -1 }); // disable input
     }
 
     return (
@@ -169,32 +207,22 @@ export default function Management() {
                 <FlatList
                     style={styles.flatList}
                     data={flatListData}
-                    renderItem={({ item }) => <FlatListItem item={item} isEdit={isEdit} checkDelete={checkDelete} checkPoint={checkPoint}></FlatListItem>}
+                    renderItem={({ item }) =>
+                        <FlatListItem item={item} isEdit={isEdit}
+                            handleDelete={handleDelete} handleBonusPoint={handleBonusPoint}
+                            handleShowInput={handleShowInput} handleSavePoint={handleSavePoint}>
+                        </FlatListItem>}
                     keyExtractor={(item) => `key-${item.id}`}
                     removeClippedSubviews={false}
+                    enableEmptySections={true}
+                // refreshing={refreshing}
+                // refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefreshData} />}
+                // extraData={refreshing}
                 >
                 </FlatList>
             </View>
 
             <View style={globalStyles.flexAuto}></View>
-            {isEdit ?
-                (
-                    <View style={styles.bottomSaveCancel}>
-                        <TouchableOpacity style={styles.paddingButton} onPress={onClickCancel}>
-                            <View style={styles.btnCancel}>
-                                <Text> Cancel</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={onClickSave}>
-                            <View style={styles.btnSave} >
-                                <Text style={styles.btnText}> Save</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                ) : null
-            }
         </View>
     );
 }
-
-

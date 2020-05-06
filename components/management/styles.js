@@ -17,10 +17,12 @@ export const styles = StyleSheet.create({
         borderRadius: 5
     },
     headerDestination: {
-        width: '50%', justifyContent: 'center'
+        width: '45%',
+        justifyContent: 'center',
     },
     headerPoint: {
-        width: '40%', justifyContent: 'center'
+        width: '45%',
+        justifyContent: 'center'
     },
     headerEditIcon: {
         width: '10%',
@@ -69,8 +71,8 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingVertical: 5
     },
-    iconDeleteWrapper: {
-        width: '10%',
+    paddingName: {
+        width: '5%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -92,11 +94,12 @@ export const styles = StyleSheet.create({
     flatListItemPoint: {
         width: '20%',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     flatListItemAdd: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: '30%'
     },
     textInput: {
         borderWidth: 0.5,
