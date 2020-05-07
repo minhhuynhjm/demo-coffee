@@ -20,6 +20,26 @@ export const clearProductFromCart = () => {
     }
 }
 
+export const showInputPoint = (item) => {
+    return {
+        type: actionTypes.SHOW_INPUT_POINT,
+        payload: item
+    }
+}
+
+export const addBonusPoint = (item) => {
+    return {
+        type: actionTypes.ADD_BONUS_POINT,
+        payload: item
+    }
+}
+
+export const clearInputPoint = () => {
+    return {
+        type: actionTypes.CLEAR_INPUT_POINT
+    }
+}
+
 export const userLogin = (item) => {
     return {
         type: actionTypes.USER_LOGIN,
@@ -30,12 +50,5 @@ export const userLogin = (item) => {
 export const userLogout = () => {
     return {
         type: actionTypes.USER_LOGOUT,
-    }
-}
-
-export const restoreToken = (item) => {
-    return {
-        type: actionTypes.RESTORE_TOKEN,
-        payload: item
     }
 }

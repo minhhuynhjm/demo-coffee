@@ -13,7 +13,7 @@ export default function LoginReducer(state = initState, action) {
                 ...state,
                 isSignIn: true,
                 isLoading: false,
-                user: action.payload
+                user: action.payload,
             }
 
         case actionTypes.USER_LOGOUT:
@@ -22,13 +22,6 @@ export default function LoginReducer(state = initState, action) {
                 isLoading: true,
                 user: null,
             }
-        case actionTypes.RESTORE_TOKEN:
-            return {
-                ...state,
-                isSignIn: true,
-                isLoading: false,
-            }
-
         default:
             return state;
     }

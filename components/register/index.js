@@ -10,7 +10,7 @@ export default function Register() {
     const [fullName, setFullName] = useState('');
     const [staffId, setStaffId] = useState('');
     const [age, setAge] = useState('');
-    const [gender, setGender] = useState(true);
+    const [gender, setGender] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -20,9 +20,11 @@ export default function Register() {
     const confirmPasswordRef = useRef(null);
 
     const onClickRegister = () => {
+        console.log('gender', gender);
         if (isRequired(fullName, "Full Name")
             && isRequired(staffId, "StaffId")
             && isRequired(age, "Age")
+            && isRequired(gender, "Gender")
             && isRequired(password, "Password")
             && isRequired(confirmPassword, "Confirm Password")
             && isMatching(password, confirmPassword)) {
@@ -58,9 +60,10 @@ export default function Register() {
                 <Text style={[globalStyles.textBoldSegoeUI, globalStyles.marginText]}>Age</Text>
                 <TextInput
                     style={globalStyles.input}
-                    onChangeText={value => setAge(value)}
+                    onChangeText={value => setAge(value.replace(/[^0-9]/g, ''))}
                     value={age}
                     keyboardType='numeric'
+                    maxLength={2}
                     returnKeyType="next"
                     blurOnSubmit={false}
                     ref={ageRef}
@@ -71,7 +74,7 @@ export default function Register() {
                 <View style={styles.wrapperDropdown}>
                     <RNPickerSelect
                         style={pickerSelectStyles}
-                        placeholder={{}}
+                        placeholder={{ label: 'Please select' }}
                         InputAccessoryView={() => null}
                         onValueChange={(value) => setGender(value)}
                         items={[

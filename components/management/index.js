@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import { Text, View, FlatList, TouchableOpacity, TextInput, Image, Alert, Keyboard, RefreshControl } from 'react-native';
 import { globalStyles } from '../../styles/global'
 import { styles } from './styles'
-import { GetUserManagement } from '../../api/webServer/managementService';
+import { showInputPoint, clearInputPoint, addBonusPoint } from '../../redux/actions'
+// import { GetUserManagement } from '../../api/webServer/managementService';
+import managementData from '../../mock_data/managementData';
 
-
-function FlatListItem({ item, isEdit, handleDelete, handleBonusPoint, handleShowInput, handleSavePoint }) {
+function FlatListItem({ item, isEdit, handleDelete, handleSavePoint }) {
+    const dispatch = useDispatch();
     useEffect(() => {
         Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
         // cleanup function
@@ -15,15 +18,13 @@ function FlatListItem({ item, isEdit, handleDelete, handleBonusPoint, handleShow
     }, []);
 
     const _keyboardDidHide = () => {
-        if (item.isShowInput) {
-            console.log("_keyboardDidHide:", item.id);
+        if (item.isShowInput && item.bonusPoint) {
             handleSavePoint(item);
         }
     };
 
     const pressAddButton = (item) => {
-        // console.log('pressAddButton:', item);
-        handleShowInput(item);
+        dispatch(showInputPoint(item));
     }
 
     const pressDeleteButton = () => {
@@ -43,7 +44,7 @@ function FlatListItem({ item, isEdit, handleDelete, handleBonusPoint, handleShow
 
     const addPointInput = (point) => {
         point = point.replace(/[^0-9]/g, '');
-        handleBonusPoint({ id: item.id, point: +item.point + +point }, point);
+        dispatch(addBonusPoint({ id: item.id, bonusPoint: point }));
     }
 
     return (
@@ -70,16 +71,16 @@ function FlatListItem({ item, isEdit, handleDelete, handleBonusPoint, handleShow
                         <TextInput style={styles.textInput}
                             keyboardType='numeric'
                             onChangeText={value => addPointInput(value)}
-                            value={item.bonus_point}
+                            value={`${item.bonusPoint}`}
                             onSubmitEditing={Keyboard.dismiss}
                         >
                         </TextInput>
                     </View>
                 ) : null}
                 {!isEdit ? (
-                    <View>
-                        <TouchableOpacity onPress={pressDeleteButton}>
-                            <Image style={styles.iconDetele} source={require('../../assets/bin.png')} ></Image>
+                    <View style={styles.wrapperDeleteIcon}>
+                        <TouchableOpacity onPress={pressDeleteButton} >
+                            <Image style={[styles.iconDetele]} source={require('../../assets/bin.png')} ></Image>
                         </TouchableOpacity>
                     </View>
                 ) : null}
@@ -90,32 +91,20 @@ function FlatListItem({ item, isEdit, handleDelete, handleBonusPoint, handleShow
 }
 
 export default function Management() {
-
+    const dispatch = useDispatch();
     const [isEdit, setIsEdit] = useState(false);
     const [flatListData, setFlatListData] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
-    const [cloneData, setCloneData] = useState([]);
-
+    const managementState = useSelector((state) => (state.managementReducer));
+    console.log('managementState', managementState);
+    const mergeData = mergeState(flatListData, managementState);
     const fetchData = () => {
         try {
-            GetUserManagement().then((result) => {
-                setFlatListData([...result, { bonus_point: "", isShowInput: false }]);
-            });
-
-            // setRefreshing(false);
+            setFlatListData(managementData);
         } catch (error) {
-            // setRefreshing(false);
+
         }
     };
-
-    // const fetchData = async () => {
-    //     try {
-    //         const data = await GetUserManagement();
-    //         console.log(data);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
 
     useEffect(() => {
         console.log('render');
@@ -125,53 +114,27 @@ export default function Management() {
     const handleDelete = (_id) => {
         console.log("Delete Item:", _id);
         setFlatListData(flatListData.filter(x => x.id != _id));
-        // fetchData();
-        // Fetch Data
     }
 
     const handleSavePoint = (item) => {
-        console.log(item)
-        console.log("handleSavePoint");
-        if (item.bonus_point) {
+        if (item.bonusPoint) {
             Alert.alert(
                 "Save Information",
                 `Are you sure you want to save changes ?`,
                 [
                     {
-                        text: "Cancel", onPress: () => { fetchData() },
+                        text: "Cancel", onPress: () => { dispatch(clearInputPoint()); },
                         style: "cancel"
                     },
                     { text: "Save", onPress: () => { savePointToDB(item) } }
                 ],
                 { cancelable: false }
             );
-        } else {
-            handleShowInput({ id: -1 }); // disable input
         }
-
-    }
-
-    const handleShowInput = (item) => {
-        let updateValue = [...flatListData];
-
-        updateValue = updateValue.map(x => {
-            x.isShowInput = x.id == item.id;
-            return x;
-        });
-        // console.log("handleShowInput ", updateValue);
-        setFlatListData(updateValue);
-    }
-
-    const handleBonusPoint = (item, bonus) => {
-        // update value in flatlistData
-        const updateValue = [...flatListData];
-
-        const index = updateValue.findIndex(x => x.id === item.id);
-        updateValue[index].bonus_point = bonus;
-        setFlatListData(updateValue);
     }
 
     const pressEditButton = () => {
+        dispatch(clearInputPoint());
         setIsEdit(!isEdit);
         if (!isEdit) {
             setFlatListData(flatListData.map(x => {
@@ -182,11 +145,10 @@ export default function Management() {
     }
 
     const savePointToDB = (item) => {
-        console.log('--------save---------', item)
-        fetchData();
-        // handleShowInput({ id: -1 }); // disable input
+        console.log('--------save to db---------', item)
+        dispatch(clearInputPoint());
+        // fetchData();
     }
-
     return (
         <View style={[styles.wrapperContainer, globalStyles.bgColorGray]}>
             <View style={styles.headerContent}>
@@ -206,23 +168,35 @@ export default function Management() {
             <View style={styles.wrapperFlatList}>
                 <FlatList
                     style={styles.flatList}
-                    data={flatListData}
+                    data={mergeData}
                     renderItem={({ item }) =>
                         <FlatListItem item={item} isEdit={isEdit}
-                            handleDelete={handleDelete} handleBonusPoint={handleBonusPoint}
-                            handleShowInput={handleShowInput} handleSavePoint={handleSavePoint}>
+                            handleDelete={handleDelete}
+                            handleSavePoint={handleSavePoint}>
                         </FlatListItem>}
                     keyExtractor={(item) => `key-${item.id}`}
                     removeClippedSubviews={false}
                     enableEmptySections={true}
-                // refreshing={refreshing}
-                // refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefreshData} />}
-                // extraData={refreshing}
                 >
                 </FlatList>
             </View>
-
             <View style={globalStyles.flexAuto}></View>
         </View>
     );
+}
+
+// Merge state 
+const mergeState = (array1 = [], object2 = {}) => {
+    console.log('Mapping state');
+    return array1.map(a1 => {
+        if (a1.id === object2.id) {
+            a1.bonusPoint = object2.bonusPoint;
+            a1.isShowInput = object2.isShowInput;
+        }
+        else {
+            a1.bonusPoint = "";
+            a1.isShowInput = false;
+        }
+        return a1;
+    })
 }

@@ -79,8 +79,12 @@ export const styles = StyleSheet.create({
         height: 30
     },
     iconDetele: {
-        width: 18,
-        height: 18
+        width: 25,
+        height: 25
+    },
+    wrapperDeleteIcon: {
+        width: '100%',
+        alignItems: 'flex-end'
     },
     textAdd: {
         fontSize: 22,
@@ -99,7 +103,8 @@ export const styles = StyleSheet.create({
     flatListItemAdd: {
         flexDirection: 'row',
         alignItems: 'center',
-        width: '30%'
+        width: '30%',
+
     },
     textInput: {
         borderWidth: 0.5,
